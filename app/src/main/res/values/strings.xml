@@ -22,4 +22,11 @@
         <item>Settings</item>
     </string-array>
 
+    <string-array name= "eventCategories">
+        <item >Free Food</item>
+        <item>Pset Parties</item>
+        <item>Arts</item>
+        <item>Talks</item>
+    </string-array>
+
 </resources>

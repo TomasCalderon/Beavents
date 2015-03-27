@@ -9,13 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Categories"
-            android:id="@+id/textView"
-            android:layout_gravity="center" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listOfCategories"
+            android:layout_gravity="left|top"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/white"
+            android:dividerHeight="0dp"
+            android:background="#111"/>
     </FrameLayout>
     <!-- The navigation drawer -->
     <ListView
