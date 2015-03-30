@@ -1,43 +1,123 @@
 package com.example.tomas.beavents;
 
-import android.app.SearchManager;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.Toast;
 
-import java.util.Arrays;
+import android.os.Bundle;
+import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 
-public class MainActivity extends BaseActivity{
+
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+
+public class MainActivity extends BaseActivity {
 //    private String[] mMenuOptions;
 //    private DrawerLayout mDrawerLayout;
 //    private ListView mDrawerList;
 //    private ActionBarDrawerToggle mDrawerToggle;
 
+    private List<String> imagePaths = new ArrayList<>();
+    private List<String> categories = new ArrayList<>();
+    DisplayImageOptions options;
+    private ImageLoader imageLoader;
+    static String[] mThumbIds = {"monster.png","a1.jpg","a2.jpg","a3.jpg","a4.jpg","a5.jpg","monster.png","a1.jpg","a2.jpg","a3.jpg","a4.jpg","a5.jpg","monster.png","a1.jpg","a2.jpg","a3.jpg","a4.jpg","a5.jpg"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         super.onCreateDrawer();
+
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(this));
+
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.empty_photo)
+                .showImageForEmptyUri(R.drawable.empty_photo)
+                .showImageOnFail(R.drawable.big_problem)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
+
+        final GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setAdapter(new ImageAdapter());
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                gridview.getAdapter().getItem(position);
+//                Intent intent = new Intent(MainActivity.this, ActivityTwo.class);
+//                intent.putExtra("position", position);
+//                startActivity(intent);
+            }
+        });
     }
+
+
+    static class ViewHolder {
+        ImageView imageView;
+    }
+
+    //    our custom adapter
+    private class ImageAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return mThumbIds.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView,
+                            ViewGroup parent) {
+            View view = convertView;
+            final ViewHolder gridViewImageHolder;
+//            check to see if we have a view
+            if (convertView == null) {
+//                no view - so create a new one
+                view = getLayoutInflater().inflate(R.layout.item_grid_image, parent, false);
+                gridViewImageHolder = new ViewHolder();
+                gridViewImageHolder.imageView = (ImageView) view.findViewById(R.id.image);
+                gridViewImageHolder.imageView.setMaxHeight(80);
+                gridViewImageHolder.imageView.setMaxWidth(80);
+                view.setTag(gridViewImageHolder);
+            } else {
+//                we've got a view
+                gridViewImageHolder = (ViewHolder) view.getTag();
+            }
+            imageLoader.displayImage("http://18.111.103.177/images/" + mThumbIds[position]
+                    , gridViewImageHolder.imageView
+                    , options);
+
+            return view;
+        }
+    }
+
 
 //        setTitle("Home");
 //        mMenuOptions = getResources().getStringArray(R.array.menu);
