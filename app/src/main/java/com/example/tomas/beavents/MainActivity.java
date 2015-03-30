@@ -1,6 +1,9 @@
 package com.example.tomas.beavents;
 
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import java.io.BufferedReader;
@@ -49,7 +52,7 @@ public class MainActivity extends BaseActivity {
     DisplayImageOptions options;
     private ImageLoader imageLoader;
     static String[] mThumbIds = {"monster.png","a1.jpg","a2.jpg","a3.jpg","a4.jpg","a5.jpg","monster.png","a1.jpg","a2.jpg","a3.jpg","a4.jpg","a5.jpg","monster.png","a1.jpg","a2.jpg","a3.jpg","a4.jpg","a5.jpg"};
-
+    private ProgressDialog pDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +61,45 @@ public class MainActivity extends BaseActivity {
 
         StrictMode.enableDefaults(); //STRICT MODE ENABLED
 
+        new LoadImage(this).execute(0);
+
         getData();
 
+
+        //Block of code to make events clickable.
+//        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+//                gridview.getAdapter().getItem(position);
+//                Intent intent = new Intent(MainActivity.this, ActivityTwo.class);
+//                intent.putExtra("position", position);
+//                startActivity(intent);
+            //}
+//        });
+    }
+
+    private class LoadImage extends AsyncTask<Integer, Integer, Integer> {
+
+        private Context mContext;
+
+        public LoadImage(Context context) {
+            mContext = context;
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(MainActivity.this);
+            pDialog.setMessage("Loading Events ....");
+            pDialog.show();
+        }
+        protected Integer doInBackground(Integer... a) {
+            getData();
+            return 0;
+        }
+        protected void onPostExecute(Integer b) {
         imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(this));
+        imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
 
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.empty_photo)
@@ -76,17 +114,8 @@ public class MainActivity extends BaseActivity {
         final GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter());
 
-        //Block of code to make events clickable.
-//        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-//                gridview.getAdapter().getItem(position);
-//                Intent intent = new Intent(MainActivity.this, ActivityTwo.class);
-//                intent.putExtra("position", position);
-//                startActivity(intent);
-            //}
-//        });
+        pDialog.dismiss();
+        }
     }
 
     public void getData(){
@@ -126,7 +155,6 @@ public class MainActivity extends BaseActivity {
             for(int i=0; i<jArray.length();i++){
                 JSONObject json = jArray.getJSONObject(i);
                 s = json.getString("FirstName");
-                Log.e("Ojala",s);
                 imagePaths.add(s);
             }
 
@@ -149,7 +177,7 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return mThumbIds.length;
+            return imagePaths.size();
         }
 
         @Override
@@ -186,7 +214,7 @@ public class MainActivity extends BaseActivity {
 
 
 
-            imageLoader.displayImage("http://18.111.103.177/images/" + mThumbIds[position]
+            imageLoader.displayImage("http://18.111.103.177/images/" + imagePaths.get(position)
                     , gridViewImageHolder.imageView
                     , options);
 
