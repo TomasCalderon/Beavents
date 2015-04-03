@@ -63,8 +63,6 @@ public class MainActivity extends BaseActivity {
 
         new LoadImage(this).execute(0);
 
-        getData();
-
 
         //Block of code to make events clickable.
 //        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -123,7 +121,7 @@ public class MainActivity extends BaseActivity {
         InputStream isr = null;
         try{
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://18.111.103.177/testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
+            HttpPost httppost = new HttpPost("http://18.189.27.2111/testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
             isr = entity.getContent();
@@ -155,7 +153,14 @@ public class MainActivity extends BaseActivity {
             for(int i=0; i<jArray.length();i++){
                 JSONObject json = jArray.getJSONObject(i);
                 s = json.getString("FirstName");
+                Log.e("Hola",s);
                 imagePaths.add(s);
+                imagePaths.add(s);
+                imagePaths.add(s);
+                imagePaths.add(s);
+                imagePaths.add(s);
+                imagePaths.add(s);
+
             }
 
 
@@ -214,7 +219,7 @@ public class MainActivity extends BaseActivity {
 
 
 
-            imageLoader.displayImage("http://18.111.103.177/images/" + imagePaths.get(position)
+            imageLoader.displayImage("http://18.189.103.81/images/" + imagePaths.get(position)
                     , gridViewImageHolder.imageView
                     , options);
 
