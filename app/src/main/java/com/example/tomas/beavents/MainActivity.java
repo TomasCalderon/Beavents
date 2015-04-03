@@ -67,16 +67,16 @@ public class MainActivity extends BaseActivity {
         //David was here
 
         //Block of code to make events clickable.
-//        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-//                gridview.getAdapter().getItem(position);
-//                Intent intent = new Intent(MainActivity.this, ActivityTwo.class);
-//                intent.putExtra("position", position);
-//                startActivity(intent);
-            //}
-//        });
+        /*gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("CLICKED: "+id);
+                gridview.getAdapter().getItem(position);
+                Intent intent = new Intent(MainActivity.this, EventActivity.class);
+                intent.putExtra("position", position);
+                startActivity(intent);
+            }
+        });*/
     }
 
     private class LoadImage extends AsyncTask<Integer, Integer, Integer> {
@@ -98,23 +98,23 @@ public class MainActivity extends BaseActivity {
             return 0;
         }
         protected void onPostExecute(Integer b) {
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
+            imageLoader = ImageLoader.getInstance();
+            imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
 
-        options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.empty_photo)
-                .showImageForEmptyUri(R.drawable.empty_photo)
-                .showImageOnFail(R.drawable.big_problem)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
+            options = new DisplayImageOptions.Builder()
+                    .showImageOnLoading(R.drawable.empty_photo)
+                    .showImageForEmptyUri(R.drawable.empty_photo)
+                    .showImageOnFail(R.drawable.big_problem)
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .considerExifParams(true)
+                    .bitmapConfig(Bitmap.Config.RGB_565)
+                    .build();
 
-        final GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter());
+            final GridView gridview = (GridView) findViewById(R.id.gridview);
+            gridview.setAdapter(new ImageAdapter());
 
-        pDialog.dismiss();
+            pDialog.dismiss();
         }
     }
 
@@ -123,7 +123,7 @@ public class MainActivity extends BaseActivity {
         InputStream isr = null;
         try{
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://18.189.27.2111/testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
+            HttpPost httppost = new HttpPost("http://18.189.102.74/testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
             isr = entity.getContent();
@@ -174,6 +174,25 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    class Event
+    {
+        String image;
+        String name;
+        String time;
+        String location;
+        Integer[] categories;
+        String description;
+
+        public Event(String image, String name, String time, String location,
+                     Integer[] categories, String description){
+            this.image=image;
+            this.name=name;
+            this.time=time;
+            this.location=location;
+            this.categories=categories;
+            this.description=description;
+        }
+    }
 
     static class ViewHolder {
         ImageView imageView;
@@ -221,7 +240,7 @@ public class MainActivity extends BaseActivity {
 
 
 
-            imageLoader.displayImage("http://18.189.103.81/images/" + imagePaths.get(position)
+            imageLoader.displayImage("http://18.189.102.74/images/" + imagePaths.get(position)
                     , gridViewImageHolder.imageView
                     , options);
 

@@ -18,31 +18,33 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
-        <activity android:name=".CategoriesActivity"
-                  android:label="@string/categories" />
-
-        <activity android:name=".CreateEventsActivity"
-                  android:label="@string/create_events" />
-
-        <activity android:name=".MyEventsActivity"
-                  android:label="@string/my_events" />
-
-        <activity android:name=".SettingsActivity"
-                  android:label="@string/settings" />    />
-
-
-        <activity android:name= ".SearchResultsActivity">
+        <activity
+            android:name=".CategoriesActivity"
+            android:label="@string/categories" />
+        <activity
+            android:name=".CreateEventsActivity"
+            android:label="@string/create_events" />
+        <activity
+            android:name=".MyEventsActivity"
+            android:label="@string/my_events" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/settings" />
+    />
+        <activity android:name=".SearchResultsActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
+
+            <meta-data
+                android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
-
-</application>
+        <activity
+            android:name=".EventActivity"
+            android:label="@string/title_activity_event" >
+        </activity>
+    </application>
 
 </manifest>

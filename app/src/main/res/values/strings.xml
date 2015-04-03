@@ -28,5 +28,6 @@
         <item>Arts</item>
         <item>Talks</item>
     </string-array>
+    <string name="title_activity_event">EventActivity</string>
 
 </resources>
