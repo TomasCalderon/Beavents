@@ -65,6 +65,7 @@ public class MainActivity extends BaseActivity {
 
         getData();
 
+        //David was here
 
         //Block of code to make events clickable.
 //        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
