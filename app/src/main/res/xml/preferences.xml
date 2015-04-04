@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+        android:title="@string/notification_preferences">
+
+        <CheckBoxPreference
+            android:key="notification_on_off_preference"
+            android:title="@string/title_notification_on_off_preference"
+            android:summary="@string/summary_notification_on_off_preference" />
+
+        <!-- The visual style of a child is defined by this styled theme attribute. -->
+        <CheckBoxPreference
+            android:key="notification_saved_only_preference"
+            android:dependency="notification_on_off_preference"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:title="@string/title_notification_saved_only_preference"
+            android:summary="@string/summary_notification_saved_only_preference" />
+        <ListPreference
+            android:key="notification_time_preference"
+            android:dependency="notification_on_off_preference"
+            android:title="@string/title_notification_time_preference"
+            android:summary="%s"
+            android:entries="@array/notification_list_preference"
+            android:entryValues="@array/notificationvalues_list_preference"
+            android:dialogTitle="@string/dialog_title_notification_time_preference"
+            android:defaultValue="0"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/interest_preferences">
+        <ListPreference
+            android:key="add_course_interest_preference"
+            android:title="@string/title_add_course_interest_preference"
+            android:summary="@string/summary_add_course_interest_preference"
+            android:entries="@array/course_list_preference"
+            android:entryValues="@array/coursevalues_list_preference"
+            android:dialogTitle="@string/dialog_title_add_course_interest_preference" />
+        <ListPreference
+            android:key="add_category_interest_preference"
+            android:title="@string/title_add_category_interest_preference"
+            android:summary="@string/summary_add_category_interest_preference"
+            android:entries="@array/category_list_preference"
+            android:entryValues="@array/categoryvalues_list_preference"
+            android:dialogTitle="@string/dialog_title_add_category_interest_preference" />
+        <MultiSelectListPreference
+            android:key="add_remove_interest_preference"
+            android:title="@string/title_remove_interest_preference"
+            android:summary="@string/summary_remove_interest_preference"
+            android:entries="@array/user_interests"
+            android:entryValues="@array/user_interests"
+            android:dialogTitle="@string/dialog_title_remove_interest_preference" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
