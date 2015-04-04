@@ -37,7 +37,7 @@ public class CreateEventsActivity extends BaseActivity {
                         String categories = categoriesfld.getText().toString();
                         String description = descriptionfld.getText().toString();
 
-                        
+
 
                     }
                 }

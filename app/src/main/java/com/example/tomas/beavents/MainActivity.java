@@ -46,11 +46,14 @@ public class MainActivity extends BaseActivity {
 //    private DrawerLayout mDrawerLayout;
 //    private ListView mDrawerList;
 //    private ActionBarDrawerToggle mDrawerToggle;
+    public  final static String SER_KEY = "com.example.tomas.beavents.events";
+    public final static String IP_ADRRESS = "http://18.189.102.74/";
 
     private List<String> imagePaths = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
     DisplayImageOptions options;
     private ImageLoader imageLoader;
+    private List<Event> loadedEvents = new ArrayList<>();
     static String[] mThumbIds = {"monster.png","a1.jpg","a2.jpg","a3.jpg","a4.jpg","a5.jpg","monster.png","a1.jpg","a2.jpg","a3.jpg","a4.jpg","a5.jpg","monster.png","a1.jpg","a2.jpg","a3.jpg","a4.jpg","a5.jpg"};
     private ProgressDialog pDialog;
     @Override
@@ -68,16 +71,7 @@ public class MainActivity extends BaseActivity {
         //David was here
 
         //Block of code to make events clickable.
-//        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-//                gridview.getAdapter().getItem(position);
-//                Intent intent = new Intent(MainActivity.this, ActivityTwo.class);
-//                intent.putExtra("position", position);
-//                startActivity(intent);
-            //}
-//        });
     }
 
     private class LoadImage extends AsyncTask<Integer, Integer, Integer> {
@@ -99,23 +93,40 @@ public class MainActivity extends BaseActivity {
             return 0;
         }
         protected void onPostExecute(Integer b) {
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
+            imageLoader = ImageLoader.getInstance();
+            imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
 
-        options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.empty_photo)
-                .showImageForEmptyUri(R.drawable.empty_photo)
-                .showImageOnFail(R.drawable.big_problem)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
+            options = new DisplayImageOptions.Builder()
+                    .showImageOnLoading(R.drawable.empty_photo)
+                    .showImageForEmptyUri(R.drawable.empty_photo)
+                    .showImageOnFail(R.drawable.big_problem)
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .considerExifParams(true)
+                    .bitmapConfig(Bitmap.Config.RGB_565)
+                    .build();
 
-        final GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter());
+            final GridView gridview = (GridView) findViewById(R.id.gridview);
+            gridview.setAdapter(new ImageAdapter());
 
-        pDialog.dismiss();
+            gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //System.out.println("CLICKED: "+id);
+
+                    gridview.getAdapter().getItem(position);
+
+                    Event clickedEvent = loadedEvents.get(position);
+                    Bundle mBundle = new Bundle();
+                    mBundle.putSerializable(SER_KEY,clickedEvent);
+
+                    Intent intent = new Intent(MainActivity.this, DisplaySingleEventActivity.class);
+                    intent.putExtras(mBundle);
+                    startActivity(intent);
+                }
+            });
+
+            pDialog.dismiss();
         }
     }
 
@@ -124,7 +135,11 @@ public class MainActivity extends BaseActivity {
         InputStream isr = null;
         try{
             HttpClient httpclient = new DefaultHttpClient();
+<<<<<<< HEAD
             HttpPost httppost = new HttpPost("http://18.189.102.74/testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
+=======
+            HttpPost httppost = new HttpPost(IP_ADRRESS+"testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
+>>>>>>> 2f6a66241ca8716a363bdfb9fe22da77cc99e78f
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
             isr = entity.getContent();
@@ -156,14 +171,8 @@ public class MainActivity extends BaseActivity {
             for(int i=0; i<jArray.length();i++){
                 JSONObject json = jArray.getJSONObject(i);
                 s = json.getString("FirstName");
-                Log.e("Hola",s);
                 imagePaths.add(s);
-                imagePaths.add(s);
-                imagePaths.add(s);
-                imagePaths.add(s);
-                imagePaths.add(s);
-                imagePaths.add(s);
-
+                loadedEvents.add(new Event(s,"name","time","location",new String[]{"a","b"}, "Come join david in connecting cuba. There will be a lot of food and bla bla bla etc what etc etc what"));
             }
 
 
@@ -174,7 +183,6 @@ public class MainActivity extends BaseActivity {
         }
 
     }
-
 
     static class ViewHolder {
         ImageView imageView;
@@ -222,7 +230,11 @@ public class MainActivity extends BaseActivity {
 
 
 
+<<<<<<< HEAD
             imageLoader.displayImage("http://18.189.102.74/images/" + imagePaths.get(position)
+=======
+            imageLoader.displayImage(IP_ADRRESS + "images/" + imagePaths.get(position)
+>>>>>>> 2f6a66241ca8716a363bdfb9fe22da77cc99e78f
                     , gridViewImageHolder.imageView
                     , options);
 

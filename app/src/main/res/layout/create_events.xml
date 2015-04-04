@@ -106,6 +106,7 @@
                     android:id= "@+id/submitEvent"/>
             </LinearLayout>
         </ScrollView>
+
     </RelativeLayout>
     <!-- The navigation drawer -->
     <ListView
