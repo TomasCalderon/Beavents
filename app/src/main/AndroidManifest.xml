@@ -29,6 +29,9 @@
             android:name=".MyEventsActivity"
             android:label="@string/my_events" />
         <activity
+            android:name=".DisplaySingleEventActivity"
+            android:label="@string/Event" />
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/settings" />
     />

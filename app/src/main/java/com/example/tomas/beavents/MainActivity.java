@@ -46,11 +46,14 @@ public class MainActivity extends BaseActivity {
 //    private DrawerLayout mDrawerLayout;
 //    private ListView mDrawerList;
 //    private ActionBarDrawerToggle mDrawerToggle;
+    public  final static String SER_KEY = "com.example.tomas.beavents.events";
+    public final String IP_ADRRESS = "http://18.189.102.74/";
 
     private List<String> imagePaths = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
     DisplayImageOptions options;
     private ImageLoader imageLoader;
+    private List<Event> loadedEvents = new ArrayList<>();
     static String[] mThumbIds = {"monster.png","a1.jpg","a2.jpg","a3.jpg","a4.jpg","a5.jpg","monster.png","a1.jpg","a2.jpg","a3.jpg","a4.jpg","a5.jpg","monster.png","a1.jpg","a2.jpg","a3.jpg","a4.jpg","a5.jpg"};
     private ProgressDialog pDialog;
     @Override
@@ -67,16 +70,7 @@ public class MainActivity extends BaseActivity {
         //David was here
 
         //Block of code to make events clickable.
-        /*gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("CLICKED: "+id);
-                gridview.getAdapter().getItem(position);
-                Intent intent = new Intent(MainActivity.this, EventActivity.class);
-                intent.putExtra("position", position);
-                startActivity(intent);
-            }
-        });*/
+
     }
 
     private class LoadImage extends AsyncTask<Integer, Integer, Integer> {
@@ -114,6 +108,23 @@ public class MainActivity extends BaseActivity {
             final GridView gridview = (GridView) findViewById(R.id.gridview);
             gridview.setAdapter(new ImageAdapter());
 
+            gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //System.out.println("CLICKED: "+id);
+
+                    gridview.getAdapter().getItem(position);
+
+                    Event clickedEvent = loadedEvents.get(position);
+                    Bundle mBundle = new Bundle();
+                    mBundle.putSerializable(SER_KEY,clickedEvent);
+
+                    Intent intent = new Intent(MainActivity.this, DisplaySingleEventActivity.class);
+                    intent.putExtras(mBundle);
+                    startActivity(intent);
+                }
+            });
+
             pDialog.dismiss();
         }
     }
@@ -123,7 +134,7 @@ public class MainActivity extends BaseActivity {
         InputStream isr = null;
         try{
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://18.189.102.74/testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
+            HttpPost httppost = new HttpPost(IP_ADRRESS+"testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
             isr = entity.getContent();
@@ -155,14 +166,8 @@ public class MainActivity extends BaseActivity {
             for(int i=0; i<jArray.length();i++){
                 JSONObject json = jArray.getJSONObject(i);
                 s = json.getString("FirstName");
-                Log.e("Hola",s);
                 imagePaths.add(s);
-                imagePaths.add(s);
-                imagePaths.add(s);
-                imagePaths.add(s);
-                imagePaths.add(s);
-                imagePaths.add(s);
-
+                loadedEvents.add(new Event(s));
             }
 
 
@@ -172,26 +177,6 @@ public class MainActivity extends BaseActivity {
             Log.e("log_tag", "Error Parsing Data "+e.toString());
         }
 
-    }
-
-    class Event
-    {
-        String image;
-        String name;
-        String time;
-        String location;
-        Integer[] categories;
-        String description;
-
-        public Event(String image, String name, String time, String location,
-                     Integer[] categories, String description){
-            this.image=image;
-            this.name=name;
-            this.time=time;
-            this.location=location;
-            this.categories=categories;
-            this.description=description;
-        }
     }
 
     static class ViewHolder {
@@ -240,7 +225,7 @@ public class MainActivity extends BaseActivity {
 
 
 
-            imageLoader.displayImage("http://18.189.102.74/images/" + imagePaths.get(position)
+            imageLoader.displayImage(IP_ADRRESS + "images/" + imagePaths.get(position)
                     , gridViewImageHolder.imageView
                     , options);
 
