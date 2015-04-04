@@ -47,7 +47,9 @@ public class MainActivity extends BaseActivity {
 //    private ListView mDrawerList;
 //    private ActionBarDrawerToggle mDrawerToggle;
     public  final static String SER_KEY = "com.example.tomas.beavents.events";
-    public final static String IP_ADRRESS = "http://18.189.102.74/";
+    public final static String DATA_BASE = "http://beavents.net84.net/test.php";
+    public final static String IMAGE_BASE = "http://beavents.net84.net/images/";
+
 
     private List<String> imagePaths = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
@@ -135,11 +137,10 @@ public class MainActivity extends BaseActivity {
         InputStream isr = null;
         try{
             HttpClient httpclient = new DefaultHttpClient();
-<<<<<<< HEAD
-            HttpPost httppost = new HttpPost("http://18.189.102.74/testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
-=======
-            HttpPost httppost = new HttpPost(IP_ADRRESS+"testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
->>>>>>> 2f6a66241ca8716a363bdfb9fe22da77cc99e78f
+
+
+            HttpPost httppost = new HttpPost(DATA_BASE); //YOUR PHP SCRIPT ADDRESS
+
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
             isr = entity.getContent();
@@ -230,11 +231,8 @@ public class MainActivity extends BaseActivity {
 
 
 
-<<<<<<< HEAD
-            imageLoader.displayImage("http://18.189.102.74/images/" + imagePaths.get(position)
-=======
-            imageLoader.displayImage(IP_ADRRESS + "images/" + imagePaths.get(position)
->>>>>>> 2f6a66241ca8716a363bdfb9fe22da77cc99e78f
+
+            imageLoader.displayImage(IMAGE_BASE + imagePaths.get(position)
                     , gridViewImageHolder.imageView
                     , options);
 
