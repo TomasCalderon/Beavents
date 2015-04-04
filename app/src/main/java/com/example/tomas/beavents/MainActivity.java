@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
 //    private ListView mDrawerList;
 //    private ActionBarDrawerToggle mDrawerToggle;
     public  final static String SER_KEY = "com.example.tomas.beavents.events";
-    public final String IP_ADRRESS = "http://18.189.102.74/";
+    public final static String IP_ADRRESS = "http://18.189.102.74/";
 
     private List<String> imagePaths = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
@@ -167,7 +167,7 @@ public class MainActivity extends BaseActivity {
                 JSONObject json = jArray.getJSONObject(i);
                 s = json.getString("FirstName");
                 imagePaths.add(s);
-                loadedEvents.add(new Event(s));
+                loadedEvents.add(new Event(s,"name","time","location",new String[]{"a","b"}, "Come join david in connecting cuba. There will be a lot of food and bla bla bla etc what etc etc what"));
             }
 
 
