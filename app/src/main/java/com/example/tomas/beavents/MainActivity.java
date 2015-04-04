@@ -64,6 +64,7 @@ public class MainActivity extends BaseActivity {
         new LoadImage(this).execute(0);
 
 
+
         //David was here
 
         //Block of code to make events clickable.
@@ -123,7 +124,7 @@ public class MainActivity extends BaseActivity {
         InputStream isr = null;
         try{
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://18.189.27.2111/testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
+            HttpPost httppost = new HttpPost("http://18.189.102.74/testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
             isr = entity.getContent();
@@ -221,7 +222,7 @@ public class MainActivity extends BaseActivity {
 
 
 
-            imageLoader.displayImage("http://18.189.103.81/images/" + imagePaths.get(position)
+            imageLoader.displayImage("http://18.189.102.74/images/" + imagePaths.get(position)
                     , gridViewImageHolder.imageView
                     , options);
 
