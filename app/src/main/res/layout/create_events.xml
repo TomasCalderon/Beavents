@@ -101,7 +101,7 @@
                     android:src="@android:drawable/ic_menu_gallery"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:id="@+id/imageView1" />
+                    android:id="@+id/imgView" />
 
                 <Button
                     android:layout_width="fill_parent"
