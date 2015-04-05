@@ -4,10 +4,16 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
+import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by LLP-student on 3/26/2015.
@@ -45,17 +51,123 @@ public class SettingsActivity extends BaseActivity  {
             System.out.println("yoooo");
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.preferences);
+            update_remove_interest_values();
+        }
+
+        private void update_remove_interest_values() {
+            MultiSelectListPreference interest_preference = (MultiSelectListPreference) findPreference("remove_interest_preference");
+            SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+            String all_interests=prefs.getString("user_interests","none");
+            Gson gson = new Gson();
+            if(all_interests.equals("none")){
+                CharSequence entries[]=new CharSequence[]{};
+                interest_preference.setEntries(entries);
+                interest_preference.setEntryValues(entries);
+            } else{
+                String[] entries = gson.fromJson(all_interests, String[].class);
+                interest_preference.setEntries(entries);
+                interest_preference.setEntryValues(entries);
+
+            }
+        }
+
+        private void addInterest(SharedPreferences prefs, String interest){
+            if(interest==null || interest.equals("") || interest.equals("none")) return;
+
+            String all_interests=prefs.getString("user_interests","none");
+            Gson gson = new Gson();
+            if(all_interests.equals("none")){
+                String[] interest_list=new String[]{interest};
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("user_interests", gson.toJson(interest_list));
+                editor.commit();
+            }
+            else {
+                String[] interest_list = gson.fromJson(all_interests, String[].class);
+                List<String> interest_array = new ArrayList(Arrays.asList(interest_list));
+                if (!interest_array.contains(interest)) {
+                    System.out.println(interest);
+                    System.out.println(interest_array);
+                    interest_array.add(interest);
+                    String[] temp = new String[interest_array.size()];
+                    temp = interest_array.toArray(temp);
+
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("user_interests", gson.toJson(temp));
+                    editor.commit();
+                }
+            }
         }
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
         {
-            System.out.println("!!!!!!!!");
-            System.out.println(key);
-            System.out.println(prefs.getAll());
-            // TODO: Change arrays.xml here
-            //IT NEVER GETS IN HERE!
+            switch(key){
+                case "notification_on_off_preference": //TODO
+                case "notification_saved_only_preference": //TODO
+                case "notification_time_preference": //TODO
+                    break;
+                case "add_course_interest_preference":
+                case "add_category_interest_preference":
+                    addInterest(prefs,prefs.getString(key,"none"));
+                    update_remove_interest_values();
+                    clear_interest_preference_values(prefs);
+                    break;
+                case "remove_interest_preference":
+                    removeInterest(prefs,prefs.getStringSet(key,null));
+                    clear_interest_preference_values(prefs);
+                    update_remove_interest_values();
+                    break;
+                default:
+                    System.out.println("ERROR: Key not found ("+key+")");
 
+            }
+
+            System.out.println("Preferences Changed: "+key);
+            System.out.println(prefs.getAll());
+
+
+        }
+        private void removeInterest(SharedPreferences prefs, Set<String> interests){
+            if(interests==null) return;
+
+            String all_interests=prefs.getString("user_interests","none");
+            Gson gson = new Gson();
+            if(all_interests.equals("none")){
+                return;
+            }
+            else {
+                String[] interest_list = gson.fromJson(all_interests, String[].class);
+                List<String> interest_array = new ArrayList(Arrays.asList(interest_list));
+                for (String interest:interests){
+                    if (interest_array.contains(interest)) {
+                        System.out.println(interest);
+                        System.out.println(interest_array);
+                        interest_array.remove(interest);
+                    }
+                }
+
+                String[] temp = new String[interest_array.size()];
+                temp = interest_array.toArray(temp);
+
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("user_interests", gson.toJson(temp));
+                editor.commit();
+            }
+        }
+
+        private void clear_interest_preference_values(SharedPreferences prefs) {
+            MultiSelectListPreference remove_interest_preference = (MultiSelectListPreference) findPreference("remove_interest_preference");
+            ListPreference category_interest_preference = (ListPreference) findPreference("add_category_interest_preference");
+            ListPreference course_interest_preference = (ListPreference) findPreference("add_course_interest_preference");
+
+            
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.remove("remove_interest_preference");
+            editor.remove("add_category_interest_preference");
+            editor.remove("add_course_interest_preference");
+            editor.commit();
         }
 
         @Override
