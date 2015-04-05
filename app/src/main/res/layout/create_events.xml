@@ -89,10 +89,13 @@
                     android:layout_centerHorizontal="true" />
 
                 <Button
-                    android:id="@+id/MyButton"
-                    android:layout_width="fill_parent"
+                    android:id="@+id/buttonLoadPicture"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pick Image" />
+                    android:layout_gravity="center"
+                    android:layout_weight="0"
+                    android:onClick="loadImagefromGallery"
+                    android:text="Load Picture" />
 
                 <ImageView
                     android:src="@android:drawable/ic_menu_gallery"
@@ -103,7 +106,10 @@
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id= "@+id/submitEvent"/>
+                    android:layout_marginTop="25dp"
+                    android:onClick="uploadImage"
+                    android:text="Upload" />
+
             </LinearLayout>
         </ScrollView>
 

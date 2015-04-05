@@ -137,7 +137,6 @@ public class MainActivity extends BaseActivity {
         InputStream isr = null;
         try{
             HttpClient httpclient = new DefaultHttpClient();
-
             HttpPost httppost = new HttpPost(DATA_BASE); //YOUR PHP SCRIPT ADDRESS
 
             HttpResponse response = httpclient.execute(httppost);
@@ -229,9 +228,8 @@ public class MainActivity extends BaseActivity {
             }
 
 
-
-
             imageLoader.displayImage(IMAGE_BASE + imagePaths.get(position)
+
                     , gridViewImageHolder.imageView
                     , options);
 
