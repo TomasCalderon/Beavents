@@ -1,5 +1,6 @@
 package com.example.tomas.beavents;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.text.Editable;
 import android.widget.ImageView;
+
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -26,9 +28,11 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+
 /**
  * Created by LLP-student on 3/26/2015.
  */
+@SuppressLint("NewApi")
 public class CreateEventsActivity extends BaseActivity {
 
     ProgressDialog prgDialog;
@@ -39,39 +43,43 @@ public class CreateEventsActivity extends BaseActivity {
     private static int RESULT_LOAD_IMG = 1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_events);
         super.onCreateDrawer();
 
-        Button submitBtn = (Button) findViewById(R.id.submitEvent);
+        prgDialog = new ProgressDialog(this);
+        // Set Cancelable as False
+        prgDialog.setCancelable(false);
+    }
+
+    /**
+     * OnClick method for final button that stores event the user created.
+     *
+     * @param v
+     */
+    public void allEvent(View v){
         final EditText titlefld = (EditText) findViewById(R.id.eventTitle);
         final EditText dayfld = (EditText) findViewById(R.id.time);
         final EditText locationfld = (EditText) findViewById(R.id.location);
         final EditText categoriesfld = (EditText) findViewById(R.id.categories);
         final EditText descriptionfld = (EditText) findViewById(R.id.description);
-
-        prgDialog = new ProgressDialog(this);
-        // Set Cancelable as False
-        prgDialog.setCancelable(false);
-
-        submitBtn.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String eventTitle = titlefld.getText().toString();
-                        String day = dayfld.getText().toString();
-                        String location = locationfld.getText().toString();
-                        String categories = categoriesfld.getText().toString();
-                        String description = descriptionfld.getText().toString();
+        String eventTitle = titlefld.getText().toString();
+        String day = dayfld.getText().toString();
+        String location = locationfld.getText().toString();
+        String categories = categoriesfld.getText().toString();
+        String description = descriptionfld.getText().toString();
 
 
+        //access database to determine the name for the image
 
-                    }
-                }
-        );
+        //String image, String name, String time, String location,
+        //String[] categories, String description
+        //Event newEvent = new Event()
 
     }
+
+
 
     public void loadImagefromGallery(View view) {
         // Create intent to Open Image applications like Gallery, Google Photos

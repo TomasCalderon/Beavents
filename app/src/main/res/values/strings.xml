@@ -30,7 +30,7 @@
     </string-array>
 
     <string name="Event">Event</string>
-    <string name="title_activity_event">EventActivity</string>
+    <string name="title_activity_event">Event Activity</string>
 
 
     <!--Preference Strings-->

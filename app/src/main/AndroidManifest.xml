@@ -44,10 +44,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity
-            android:name=".EventActivity"
-            android:label="@string/title_activity_event" >
-        </activity>
+
     </application>
 
 </manifest>
