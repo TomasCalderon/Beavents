@@ -34,7 +34,7 @@ public class DisplaySingleEventActivity extends BaseActivity {
         this.mEvent = (Event) getIntent().getSerializableExtra(MainActivity.SER_KEY);
 
         this.mImageView = (ImageView) findViewById(R.id.eventImage);
-        new LoadImage().execute(MainActivity.IP_ADRRESS + "images/" + mEvent.getImage());
+        new LoadImage().execute(MainActivity.IMAGE_BASE + mEvent.getImage());
 
         this.displayEventInformation();
 
