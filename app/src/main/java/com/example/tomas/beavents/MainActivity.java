@@ -135,11 +135,7 @@ public class MainActivity extends BaseActivity {
         InputStream isr = null;
         try{
             HttpClient httpclient = new DefaultHttpClient();
-<<<<<<< HEAD
-            HttpPost httppost = new HttpPost("http://18.189.102.74/testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
-=======
             HttpPost httppost = new HttpPost(IP_ADRRESS+"testdatabase/getAllCustomers.php"); //YOUR PHP SCRIPT ADDRESS
->>>>>>> 2f6a66241ca8716a363bdfb9fe22da77cc99e78f
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
             isr = entity.getContent();
@@ -230,11 +226,8 @@ public class MainActivity extends BaseActivity {
 
 
 
-<<<<<<< HEAD
-            imageLoader.displayImage("http://18.189.102.74/images/" + imagePaths.get(position)
-=======
+
             imageLoader.displayImage(IP_ADRRESS + "images/" + imagePaths.get(position)
->>>>>>> 2f6a66241ca8716a363bdfb9fe22da77cc99e78f
                     , gridViewImageHolder.imageView
                     , options);
 

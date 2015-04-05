@@ -42,7 +42,7 @@
             android:entryValues="@array/categoryvalues_list_preference"
             android:dialogTitle="@string/dialog_title_add_category_interest_preference" />
         <MultiSelectListPreference
-            android:key="add_remove_interest_preference"
+            android:key="remove_interest_preference"
             android:title="@string/title_remove_interest_preference"
             android:summary="@string/summary_remove_interest_preference"
             android:entries="@array/user_interests"
