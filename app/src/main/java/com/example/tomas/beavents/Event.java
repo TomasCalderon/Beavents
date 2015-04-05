@@ -15,6 +15,7 @@ public class Event implements Serializable{
 
     String image;
     String name;
+    String date;
     String time;
     String location;
     String[] categories;
@@ -22,10 +23,12 @@ public class Event implements Serializable{
     public Event(String image){
         this.image = image;
     }
-    public Event(String image, String name, String time, String location,
-                 String[] categories, String description){
+
+    public Event(String image, String name, String date,String time, String location,
+                 String description){
         this.image=image;
         this.name=name;
+        this.date = date;
         this.time=time;
         this.location=location;
         this.categories=categories;
@@ -55,5 +58,8 @@ public class Event implements Serializable{
         return this.description;
     }
 
+    public String getDate(){
+        return this.date;
+    }
 }
 

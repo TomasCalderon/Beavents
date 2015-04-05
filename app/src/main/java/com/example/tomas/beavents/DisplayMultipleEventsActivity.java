@@ -39,8 +39,8 @@ import java.util.List;
  */
 public class DisplayMultipleEventsActivity extends BaseActivity {
     public  final static String SER_KEY = "com.example.tomas.beavents.events";
-    public final static String DATA_BASE = "http://beavents.net84.net/test.php";
-    public final static String IMAGE_BASE = "http://beavents.net84.net/images/";
+    public final static String DATABASE = "http://beavents.net84.net/get_all_events.php";
+    public final static String IMAGEBASE = "http://beavents.net84.net/images/";
 
 
     private List<String> imagePaths = new ArrayList<>();
@@ -137,7 +137,7 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
         InputStream isr = null;
         try{
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(DATA_BASE); //YOUR PHP SCRIPT ADDRESS
+            HttpPost httppost = new HttpPost(DATABASE); //YOUR PHP SCRIPT ADDRESS
 
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
@@ -162,20 +162,16 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             Log.e("log_tag", "Error  converting result "+e.toString());
         }
 
+
         //parse json data
         try {
-            String s = "";
             JSONArray jArray = new JSONArray(result);
 
             for(int i=0; i<jArray.length();i++){
                 JSONObject json = jArray.getJSONObject(i);
-                s = json.getString("FirstName");
-                imagePaths.add(s);
-                loadedEvents.add(new Event(s,"name","time","location",new String[]{"a","b"}, "Come join david in connecting cuba. There will be a lot of food and bla bla bla etc what etc etc what"));
+                Event fetchedEvent = parseEvent(json);
+                loadedEvents.add(fetchedEvent);
             }
-
-
-
         } catch (Exception e) {
             // TODO: handle exception
             Log.e("log_tag", "Error Parsing Data "+e.toString());
@@ -228,12 +224,34 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             }
 
 
-            imageLoader.displayImage(IMAGE_BASE + imagePaths.get(position)
+            imageLoader.displayImage(IMAGEBASE + imagePaths.get(position)
 
                     , gridViewImageHolder.imageView
                     , options);
 
             return view;
         }
+    }
+
+    public Event parseEvent(JSONObject json){
+        try {
+
+            String image = json.getString("Image");
+            imagePaths.add(image);
+
+            String name = json.getString("Name");
+            String date = json.getString("Date");
+            String time = json.getString("Time");
+            String location = json.getString("Location");
+            String description = json.getString("Description");
+
+            return new Event(image,name,date,time,location,description);
+        }
+        catch (Exception e) {
+            // TODO: handle exception
+            Log.e("log_tag", "Error Parsing Data "+e.toString());
+        }
+
+        return new Event("no_image","Name","Date","Time","Location","Description");
     }
 }
