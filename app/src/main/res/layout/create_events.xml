@@ -8,24 +8,105 @@
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:weightSum="1">
+                <TextView
+                     android:layout_width="fill_parent"
+                     android:layout_height="45dp"
+                     android:textAppearance="?android:attr/textAppearanceLarge"
+                     android:text="Create An Event"
+                     android:id="@+id/createEventTitle"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Create Events"
-            android:id="@+id/textView"
-            android:layout_gravity="center" />
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventTitle"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="60dp"
+                    android:hint="Event Name"
+                    android:gravity="center_horizontal" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/textView2"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="197dp" />
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/date"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/eventTitle"
+                    android:hint="mm/dd/yyyy"
+                    android:gravity="center_horizontal" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/time"
+                    android:hint="00:00 am - 00:00 pm"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@+id/date"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/location"
+                    android:hint="Location"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@+id/time"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/categories"
+                    android:hint="Categories"
+                    android:gravity="center_horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="175dp"
+                    android:id="@+id/description"
+                    android:hint="Description"
+                    android:gravity="top|left"
+                    android:layout_below="@+id/categories"
+                    android:layout_centerHorizontal="true" />
+
+                <Button
+                    android:id="@+id/MyButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pick Image" />
+
+                <ImageView
+                    android:src="@android:drawable/ic_menu_gallery"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/imageView1" />
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id= "@+id/submitEvent"/>
+            </LinearLayout>
+        </ScrollView>
+
     </RelativeLayout>
     <!-- The navigation drawer -->
     <ListView
