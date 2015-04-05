@@ -11,8 +11,8 @@ import android.view.MenuItem;
  */
 public class MyEventsActivity extends BaseActivity{
     ActionBar.Tab tab1, tab2;
-    Fragment fragmentTab1 = new MySavedEventActivity();
-    Fragment fragmentTab2 = new MyCreatedEventActivity();
+    //Fragment fragmentTab1 = new MySavedEventActivity();
+    //Fragment fragmentTab2 = new MyCreatedEventActivity();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +26,8 @@ public class MyEventsActivity extends BaseActivity{
         tab2 = actionBar.newTab();
         tab2.setText("2");
 
-        tab1.setTabListener(new TabListenerActivity(fragmentTab1));
-        tab2.setTabListener(new TabListenerActivity(fragmentTab2));
+        //tab1.setTabListener(new TabListenerActivity(fragmentTab1));
+        //tab2.setTabListener(new TabListenerActivity(fragmentTab2));
 
         actionBar.addTab(tab1);
         actionBar.addTab(tab2);

@@ -121,9 +121,11 @@ public class BaseActivity extends ActionBarActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println(id);
         mDrawerList.setItemChecked(position, true);
 
         Intent intent = chosenScreenIntent(mMenuOptions[position]);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
@@ -151,6 +153,10 @@ public class BaseActivity extends ActionBarActivity implements AdapterView.OnIte
             default:
                 return new Intent(this, MainActivity.class);
         }
+    }
+
+    public boolean isDrawerOpen(){
+        return mDrawerLayout.isDrawerOpen(GravityCompat.START);
     }
 }
 

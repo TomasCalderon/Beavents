@@ -29,19 +29,24 @@ public class CategoriesActivity extends BaseActivity implements AdapterView.OnIt
         mCategoriesListView.setAdapter(new ArrayAdapter<String>(this,R.layout.categories_list_layout,
                 mEventCategories));
         // Set the list's click listener
+
+
         mCategoriesListView.setOnItemClickListener(this);
 
 
 
     }
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mCategoriesListView.setItemChecked(position, true);
-        String eventsToDisplay = mEventCategories[position];
-        Intent intent = new Intent(this, DisplayMultipleEventsActivity.class);
-        intent.putExtra("eventsToDisplay", eventsToDisplay);
-        startActivity(intent);
+        if (super.isDrawerOpen())super.onItemClick(parent,view,position,id);
+        else{
+            System.out.println("Category: "+id);
+            mCategoriesListView.setItemChecked(position, true);
+            String eventsToDisplay = mEventCategories[position];
+            Intent intent = new Intent(this, DisplayMultipleEventsActivity.class);
+            intent.putExtra("eventsToDisplay", eventsToDisplay);
+            startActivity(intent);
+        }
     }
 
 
