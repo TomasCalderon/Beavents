@@ -31,10 +31,10 @@ public class DisplaySingleEventActivity extends BaseActivity {
         setContentView(R.layout.display_single_event_activity);
         super.onCreateDrawer();
 
-        this.mEvent = (Event) getIntent().getSerializableExtra(MainActivity.SER_KEY);
+        this.mEvent = (Event) getIntent().getSerializableExtra(DisplayMultipleEventsActivity.SER_KEY);
 
         this.mImageView = (ImageView) findViewById(R.id.eventImage);
-        new LoadImage().execute(MainActivity.IMAGE_BASE + mEvent.getImage());
+        new LoadImage().execute(DisplayMultipleEventsActivity.IMAGE_BASE + mEvent.getImage());
 
         this.displayEventInformation();
 

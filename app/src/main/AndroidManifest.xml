@@ -26,8 +26,14 @@
             android:name=".CreateEventsActivity"
             android:label="@string/create_events" />
         <activity
-            android:name=".MyEventsActivity"
-            android:label="@string/my_events" />
+        android:name=".MySavedEventActivity"
+        android:label="@string/saved_events" />
+        <activity
+            android:name=".MyCreatedEventActivity"
+            android:label="@string/created_events" />
+        <activity
+            android:name=".DisplayMultipleEventsActivity"
+            android:label="@string/app_name" />
         <activity
             android:name=".DisplaySingleEventActivity"
             android:label="@string/Event" />

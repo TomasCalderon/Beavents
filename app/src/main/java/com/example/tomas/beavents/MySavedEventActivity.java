@@ -10,12 +10,11 @@ import android.widget.TextView;
 /**
  * Created by pineiro on 4/5/15.
  */
-public class MySavedEventActivity extends Fragment {
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.tab, container, false);
-        TextView textview = (TextView) view.findViewById(R.id.tabtextview);
-        textview.setText("Hey There");
-        return view;
+public class MySavedEventActivity extends BaseActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.my_events);
+        super.onCreateDrawer();
     }
 }

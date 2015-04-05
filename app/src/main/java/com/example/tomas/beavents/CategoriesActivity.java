@@ -38,7 +38,9 @@ public class CategoriesActivity extends BaseActivity implements AdapterView.OnIt
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         mCategoriesListView.setItemChecked(position, true);
-        Intent intent = new Intent(this, MainActivity.class);
+        String eventsToDisplay = mEventCategories[position];
+        Intent intent = new Intent(this, DisplayMultipleEventsActivity.class);
+        intent.putExtra("eventsToDisplay", eventsToDisplay);
         startActivity(intent);
     }
 
