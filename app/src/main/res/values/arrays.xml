@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="notification_list_preference">
+        <item>Immediate</item>
+        <item>Every Hour</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+    </string-array>
+
+    <string-array name="notificationvalues_list_preference">
+        <item>test 1</item>
+        <item>test 2</item>
+        <item>test 3</item>
+        <item>test 4</item>
+    </string-array>
+
+        <string-array name="category_list_preference">
+            <item>Immediate</item>
+            <item>Every Hour</item>
+            <item>Daily</item>
+            <item>Weekly</item>
+        </string-array>
+
+        <string-array name="categoryvalues_list_preference">
+            <item>test 1</item>
+            <item>test 2</item>
+            <item>test 3</item>
+            <item>test 4</item>
+        </string-array>
+
+
+    <string-array name="course_list_preference">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+    </string-array>
+
+    <string-array name="coursevalues_list_preference">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+    </string-array>
+
+
+    <string-array name="user_interests">
+        <item>some interest</item>
+        <item>some interest1</item>
+        <item>some interest2</item>
+        <item>some interest3</item>
+    </string-array>
+</resources>
