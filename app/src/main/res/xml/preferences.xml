@@ -45,8 +45,7 @@
             android:key="remove_interest_preference"
             android:title="@string/title_remove_interest_preference"
             android:summary="@string/summary_remove_interest_preference"
-            android:entries="@array/user_interests"
-            android:entryValues="@array/user_interests"
+
             android:dialogTitle="@string/dialog_title_remove_interest_preference" />
     </PreferenceCategory>
 
