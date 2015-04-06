@@ -139,8 +139,10 @@ public class BaseActivity extends ActionBarActivity implements AdapterView.OnIte
         switch(optionChosen){
             case "Home":
                 return new Intent(this, MainActivity.class);
-            case "Categories":
+            case "Search by Categories":
                 return new Intent(this, CategoriesActivity.class);
+            case "Search by Course Number":
+                return new Intent(this, SearchCourseNumberActivity.class);
             case "Create Event":
                 return new Intent(this,CreateEventsActivity.class);
             case "My Saved Events":

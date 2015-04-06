@@ -24,6 +24,9 @@
             android:name=".CategoriesActivity"
             android:label="@string/categories" />
         <activity
+            android:name=".SearchCourseNumberActivity"
+            android:label="@string/course_number" />
+        <activity
             android:name=".CreateEventsActivity"
             android:label="@string/create_events" />
         <activity

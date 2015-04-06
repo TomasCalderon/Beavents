@@ -22,9 +22,12 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,12 +42,12 @@ import java.util.List;
  */
 public class DisplayMultipleEventsActivity extends BaseActivity {
     public  final static String SER_KEY = "com.example.tomas.beavents.events";
-    public final static String DATABASE = "http://beavents.net84.net/get_all_events.php";
+    public final static String DATABASE = "http://beavents.net84.net/get_some_images.php";
     public final static String IMAGEBASE = "http://beavents.net84.net/images/";
 
 
     private List<String> imagePaths = new ArrayList<>();
-    private List<String> categories = new ArrayList<>();
+    private String eventsToDisplay;
     DisplayImageOptions options;
     private ImageLoader imageLoader;
     private List<Event> loadedEvents = new ArrayList<>();
@@ -58,21 +61,9 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
 
         StrictMode.enableDefaults(); //STRICT MODE ENABLED
 
-        String eventsToDisplay = (String) getIntent().getExtras().getString("eventsToDisplay");
-
-        if(eventsToDisplay.equals("INTERESTS")){
-            //Put settings in categories
-        }else{
-            categories.add(eventsToDisplay);
-        }
+        eventsToDisplay = (String) getIntent().getExtras().getString("eventsToDisplay");
 
         new LoadImage(this).execute(0);
-
-
-
-        //David was here
-
-        //Block of code to make events clickable.
 
     }
 
@@ -91,7 +82,11 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             pDialog.show();
         }
         protected Integer doInBackground(Integer... a) {
-            getData();
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+            String queryString = createQueryString();
+            params.add(new BasicNameValuePair("Query", queryString));
+            getData(params);
             return 0;
         }
         protected void onPostExecute(Integer b) {
@@ -132,12 +127,32 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
         }
     }
 
-    public void getData(){
+    private String createQueryString() {
+        if(eventsToDisplay.equals("INTERESTS")){
+            return "SELECT * FROM Events";
+        }else if(eventsToDisplay.contains("number")){
+            String courseNumber = eventsToDisplay.substring(6);
+            String a = "SELECT * FROM Events WHERE CourseNum1 =" + courseNumber+ " or CourseNum2 ="+courseNumber;
+            return a;
+        }
+
+        else{
+            eventsToDisplay = "'"+eventsToDisplay+"'";
+            String a = "SELECT * FROM Events WHERE Category1 =" + eventsToDisplay+ " or Category2 ="+eventsToDisplay
+                    + " or Category3 = " + eventsToDisplay;
+            return a;
+        }
+
+    }
+
+    public void getData(List<NameValuePair> params){
         String result = "";
         InputStream isr = null;
         try{
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(DATABASE); //YOUR PHP SCRIPT ADDRESS
+
+            httppost.setEntity(new UrlEncodedFormEntity(params));
 
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
