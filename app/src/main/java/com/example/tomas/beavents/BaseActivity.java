@@ -143,9 +143,9 @@ public class BaseActivity extends ActionBarActivity implements AdapterView.OnIte
                 return new Intent(this, CategoriesActivity.class);
             case "Create Event":
                 return new Intent(this,CreateEventsActivity.class);
-            case "Saved Events":
+            case "My Saved Events":
                 return new Intent(this, MySavedEventActivity.class);
-            case "Created Events":
+            case "My Created Events":
                 return new Intent(this, MyCreatedEventActivity.class);
 
             case "Settings":
