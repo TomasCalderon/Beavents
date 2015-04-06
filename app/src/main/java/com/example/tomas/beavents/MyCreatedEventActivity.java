@@ -250,11 +250,13 @@ public class MyCreatedEventActivity extends BaseActivity{
                 gridViewImageHolder.imageView.setMaxHeight(80);
                 gridViewImageHolder.imageView.setMaxWidth(80);
                 view.setTag(gridViewImageHolder);
+                view.setTag(R.id.text, view.findViewById(R.id.text));
 
 
             } else {
 //                we've got a view
                 gridViewImageHolder = (ViewHolder) view.getTag();
+
             }
 
 
@@ -262,6 +264,9 @@ public class MyCreatedEventActivity extends BaseActivity{
 
                     , gridViewImageHolder.imageView
                     , options);
+
+            name = (TextView) view.getTag(R.id.text);
+            name.setText(loadedEvents.get(position).getName());
 
             return view;
         }
