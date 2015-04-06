@@ -73,33 +73,36 @@ public class SettingsActivity extends BaseActivity  {
             }
         }
 
-        private boolean addInterest(SharedPreferences prefs, String interest){
-            if(interest==null || interest.equals("") || interest.equals("none")) return false;
+        private boolean setInterests(SharedPreferences prefs, Set<String> courseInterests, Set<String> categoryInterests){
+            Set<String> interests=new HashSet<>();
+            if(courseInterests!=null) interests.addAll(courseInterests);
+            if(categoryInterests!=null) interests.addAll(categoryInterests);
 
             String all_interests=prefs.getString("user_interests","none");
             Gson gson = new Gson();
             if(all_interests.equals("none")){
-                String[] interest_list=new String[]{interest};
+                String[] temp = new String[interests.size()];
+                temp = interests.toArray(temp);
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("user_interests", gson.toJson(interest_list));
+                editor.putString("user_interests", gson.toJson(temp));
                 editor.commit();
+                return true;
             }
             else {
                 String[] interest_list = gson.fromJson(all_interests, String[].class);
                 List<String> interest_array = new ArrayList(Arrays.asList(interest_list));
-                if (!interest_array.contains(interest)) {
-                    System.out.println(interest);
-                    System.out.println(interest_array);
-                    interest_array.add(interest);
-                    String[] temp = new String[interest_array.size()];
-                    temp = interest_array.toArray(temp);
+                if(interest_array.containsAll(interests) && interests.containsAll(interest_array)) return false;
 
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString("user_interests", gson.toJson(temp));
-                    editor.commit();
-                }
+
+                String[] temp = new String[interests.size()];
+                temp = interests.toArray(temp);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("user_interests", gson.toJson(temp));
+                editor.commit();
+
+
+                return true;
             }
-            return true;
         }
 
         @Override
@@ -119,7 +122,7 @@ public class SettingsActivity extends BaseActivity  {
                     break;
                 case "add_course_interest_preference":
                 case "add_category_interest_preference":
-                    if(addInterest(prefs,prefs.getString(key,"none"))){
+                    if(setInterests(prefs, prefs.getStringSet("add_course_interest_preference", null), prefs.getStringSet("add_category_interest_preference", null))){
                         update_remove_interest_values();
                         clear_interest_preference_values(prefs);
                     }
@@ -171,20 +174,50 @@ public class SettingsActivity extends BaseActivity  {
         }
 
         private void clear_interest_preference_values(SharedPreferences prefs) {
+            getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
             MultiSelectListPreference remove_interest_preference = (MultiSelectListPreference) findPreference("remove_interest_preference");
-            ListPreference category_interest_preference = (ListPreference) findPreference("add_category_interest_preference");
-            ListPreference course_interest_preference = (ListPreference) findPreference("add_course_interest_preference");
+            MultiSelectListPreference category_interest_preference = (MultiSelectListPreference ) findPreference("add_category_interest_preference");
+            MultiSelectListPreference course_interest_preference = (MultiSelectListPreference ) findPreference("add_course_interest_preference");
+
+            String all_interests=prefs.getString("user_interests","none");
+            Gson gson = new Gson();
+            if(all_interests.equals("none")){
+                category_interest_preference.setValues(new HashSet<String>());
+                course_interest_preference.setValues(new HashSet<String>());
+            }
+            else {
+                String[] interest_list = gson.fromJson(all_interests, String[].class);
+                Set<String> interest_array = new HashSet<>(Arrays.asList(interest_list));
+                Set<String> new_category_preferences = new HashSet<>();
+                Set<String> new_course_preferences = new HashSet<>();
+
+                CharSequence[] course_pref=course_interest_preference.getEntryValues();
+                for(int i=0;i<course_pref.length;i++){
+                    String pref=course_pref[i].toString();
+                    if(interest_array.contains(pref))new_course_preferences.add(pref);
+                }
+
+                CharSequence[] category_pref=category_interest_preference.getEntryValues();
+                for(int i=0;i<category_pref.length;i++){
+                    String pref=category_pref[i].toString();
+                    if(interest_array.contains(pref))new_category_preferences.add(pref);
+                }
+
+                category_interest_preference.setValues(new_category_preferences);
+                course_interest_preference.setValues(new_course_preferences);
+            }
 
             remove_interest_preference.setValues(new HashSet<String>());
-            category_interest_preference.setValue("");
-            course_interest_preference.setValue("");
+
 
 
             SharedPreferences.Editor editor = prefs.edit();
             editor.remove("remove_interest_preference");
-            editor.remove("add_category_interest_preference");
-            editor.remove("add_course_interest_preference");
+            //editor.remove("add_category_interest_preference");
+            //editor.remove("add_course_interest_preference");
             editor.commit();
+
+            getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         }
 
         @Override

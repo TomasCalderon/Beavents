@@ -48,10 +48,10 @@
     <string name="dialog_title_notification_time_preference">Notification Frequency</string>
     <string name="interest_preferences">Set Interests</string>
     <string name="title_add_course_interest_preference">Course Number</string>
-    <string name="summary_add_course_interest_preference">Add a course to your interests</string>
+    <string name="summary_add_course_interest_preference">Set course interests</string>
     <string name="dialog_title_add_course_interest_preference">Course Number</string>
     <string name="title_add_category_interest_preference">Category</string>
-    <string name="summary_add_category_interest_preference">Add a category to your interests</string>
+    <string name="summary_add_category_interest_preference">Set category interests</string>
     <string name="dialog_title_add_category_interest_preference">Category</string>
     <string name="title_remove_interest_preference">Remove an interest</string>
     <string name="summary_remove_interest_preference"></string>
