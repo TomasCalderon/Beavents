@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import com.google.gson.Gson;
 
@@ -19,11 +20,12 @@ import java.util.Set;
  * Created by LLP-student on 3/26/2015.
  */
 public class SettingsActivity extends BaseActivity  {
+    private static List<String> IGNORE_KEYS=Arrays.asList(new String[]{"user_interests","saved_events","created_events"});
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
-
+        super.onCreateDrawer();
         // Display the fragment as the main content.
         FragmentManager mFragmentManager = getFragmentManager();
         FragmentTransaction mFragmentTransaction = mFragmentManager
@@ -32,7 +34,7 @@ public class SettingsActivity extends BaseActivity  {
         mFragmentTransaction.replace(R.id.content_frame, mPrefsFragment);
         mFragmentTransaction.commit();
 
-        super.onCreateDrawer();
+
 //        SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 //            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 //
@@ -48,9 +50,8 @@ public class SettingsActivity extends BaseActivity  {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            System.out.println("yoooo");
             // Load the preferences from an XML resource
-            addPreferencesFromResource(R.xml.preferences);
+                addPreferencesFromResource(R.xml.preferences);
             update_remove_interest_values();
         }
 
@@ -64,6 +65,7 @@ public class SettingsActivity extends BaseActivity  {
                 interest_preference.setEntries(entries);
                 interest_preference.setEntryValues(entries);
             } else{
+                System.out.println("ALL INTERESTS: "+all_interests);
                 String[] entries = gson.fromJson(all_interests, String[].class);
                 interest_preference.setEntries(entries);
                 interest_preference.setEntryValues(entries);
@@ -71,8 +73,8 @@ public class SettingsActivity extends BaseActivity  {
             }
         }
 
-        private void addInterest(SharedPreferences prefs, String interest){
-            if(interest==null || interest.equals("") || interest.equals("none")) return;
+        private boolean addInterest(SharedPreferences prefs, String interest){
+            if(interest==null || interest.equals("") || interest.equals("none")) return false;
 
             String all_interests=prefs.getString("user_interests","none");
             Gson gson = new Gson();
@@ -97,23 +99,30 @@ public class SettingsActivity extends BaseActivity  {
                     editor.commit();
                 }
             }
+            return true;
         }
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
         {
+            if(IGNORE_KEYS.contains(key)) return;
+
             if(!prefs.getAll().containsKey(key)) return;
 
             switch(key){
                 case "notification_on_off_preference": //TODO
                 case "notification_saved_only_preference": //TODO
+                    break;
                 case "notification_time_preference": //TODO
+                    Preference preference = findPreference(key);
+                    preference.setSummary(((ListPreference) preference).getEntry());
                     break;
                 case "add_course_interest_preference":
                 case "add_category_interest_preference":
-                    addInterest(prefs,prefs.getString(key,"none"));
-                    update_remove_interest_values();
-                    clear_interest_preference_values(prefs);
+                    if(addInterest(prefs,prefs.getString(key,"none"))){
+                        update_remove_interest_values();
+                        clear_interest_preference_values(prefs);
+                    }
                     break;
                 case "remove_interest_preference":
                     if(removeInterest(prefs,prefs.getStringSet(key,null))) {
@@ -131,6 +140,7 @@ public class SettingsActivity extends BaseActivity  {
 
         }
         private boolean removeInterest(SharedPreferences prefs, Set<String> interests){
+            System.out.println("length: "+interests.size());
             if(interests==null || interests.size()==0) return false;
 
             String all_interests=prefs.getString("user_interests","none");

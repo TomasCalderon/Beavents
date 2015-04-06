@@ -54,7 +54,7 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        super.onCreateDrawer();
+            super.onCreateDrawer();
 
         StrictMode.enableDefaults(); //STRICT MODE ENABLED
 
