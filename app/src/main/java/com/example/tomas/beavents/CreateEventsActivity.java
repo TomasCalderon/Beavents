@@ -63,7 +63,6 @@ public class CreateEventsActivity extends BaseActivity {
     Bitmap bitmap;
     private static int RESULT_LOAD_IMG = 1;
 
-    JSONParser jsonParser = new JSONParser();
     public EditText titlefld;
     public EditText dayfld;
     public EditText locationfld;

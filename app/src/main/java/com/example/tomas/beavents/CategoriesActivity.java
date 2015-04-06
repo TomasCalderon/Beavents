@@ -40,7 +40,6 @@ public class CategoriesActivity extends BaseActivity implements AdapterView.OnIt
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (super.isDrawerOpen())super.onItemClick(parent,view,position,id);
         else{
-            System.out.println("Category: "+id);
             mCategoriesListView.setItemChecked(position, true);
             String eventsToDisplay = mEventCategories[position];
             Intent intent = new Intent(this, DisplayMultipleEventsActivity.class);
