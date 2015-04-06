@@ -11,7 +11,7 @@
     <string name="search_title">Search</string>
     <string name="home">Home</string>
     <string name="categories">Categories</string>
-    <string name="create_events">Create Events</string>
+    <string name="create_events">Create An Event</string>
     <string name="saved_events">My Saved Events</string>
     <string name="created_events">My Created Events</string>
     <string name="settings">Settings</string>
@@ -56,5 +56,10 @@
     <string name="title_remove_interest_preference">Remove an interest</string>
     <string name="summary_remove_interest_preference"></string>
     <string name="dialog_title_remove_interest_preference">Select all interests to remove</string>
+
+    <!--Create Event Strings-->
+    <string name="pick_date">Click to set date of event</string>
+    <string name="pick_start">Pick start time</string>
+    <string name="pick_end">Pick end time</string>
 
 </resources>
