@@ -38,7 +38,7 @@ public class SearchCourseNumberActivity extends BaseActivity{
         if (super.isDrawerOpen())super.onItemClick(parent,view,position,id);
         else{
             mCategoriesListView.setItemChecked(position, true);
-            String eventsToDisplay = mEventCategories[position];
+            String eventsToDisplay = mEventCategories[position].split(" ")[1];
             Intent intent = new Intent(this, DisplayMultipleEventsActivity.class);
             intent.putExtra("eventsToDisplay", "number"+eventsToDisplay);
             startActivity(intent);
