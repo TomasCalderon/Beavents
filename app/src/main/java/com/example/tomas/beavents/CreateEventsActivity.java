@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,11 +23,28 @@ import android.widget.ImageView;
 
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -35,6 +53,9 @@ import com.loopj.android.http.RequestParams;
 @SuppressLint("NewApi")
 public class CreateEventsActivity extends BaseActivity {
 
+    private static final String CREATE_EVENT_URL = "http://beavents.net84.net/create_event.php";
+    private static final String TAG_SUCCESS = "success";
+    private ProgressDialog pDialog;
     ProgressDialog prgDialog;
     String encodedString;
     RequestParams params = new RequestParams();
@@ -42,6 +63,15 @@ public class CreateEventsActivity extends BaseActivity {
     Bitmap bitmap;
     private static int RESULT_LOAD_IMG = 1;
 
+    JSONParser jsonParser = new JSONParser();
+    public EditText titlefld;
+    public EditText dayfld;
+    public EditText locationfld;
+    public EditText categoriesfld;
+    public EditText descriptionfld;
+    public EditText timefld;
+
+    public String imageFile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,35 +81,14 @@ public class CreateEventsActivity extends BaseActivity {
         prgDialog = new ProgressDialog(this);
         // Set Cancelable as False
         prgDialog.setCancelable(false);
+
+        titlefld = (EditText) findViewById(R.id.eventTitle);
+        dayfld = (EditText) findViewById(R.id.date);
+        timefld = (EditText) findViewById(R.id.time);
+        locationfld = (EditText) findViewById(R.id.location);
+        categoriesfld = (EditText) findViewById(R.id.categories);
+        descriptionfld = (EditText) findViewById(R.id.description);
     }
-
-    /**
-     * OnClick method for final button that stores event the user created.
-     *
-     * @param v
-     */
-    public void allEvent(View v){
-        final EditText titlefld = (EditText) findViewById(R.id.eventTitle);
-        final EditText dayfld = (EditText) findViewById(R.id.time);
-        final EditText locationfld = (EditText) findViewById(R.id.location);
-        final EditText categoriesfld = (EditText) findViewById(R.id.categories);
-        final EditText descriptionfld = (EditText) findViewById(R.id.description);
-        String eventTitle = titlefld.getText().toString();
-        String day = dayfld.getText().toString();
-        String location = locationfld.getText().toString();
-        String categories = categoriesfld.getText().toString();
-        String description = descriptionfld.getText().toString();
-
-
-        //access database to determine the name for the image
-
-        //String image, String name, String time, String location,
-        //String[] categories, String description
-        //Event newEvent = new Event()
-
-    }
-
-
 
     public void loadImagefromGallery(View view) {
         // Create intent to Open Image applications like Gallery, Google Photos
@@ -119,7 +128,9 @@ public class CreateEventsActivity extends BaseActivity {
                 String fileNameSegments[] = imgPath.split("/");
                 fileName = fileNameSegments[fileNameSegments.length - 1];
                 // Put file name in Async Http Post Param which will used in Php web app
+                this.imageFile = fileName;
                 params.put("filename", fileName);
+
 
             } else {
                 Toast.makeText(this, "You haven't picked Image",
@@ -140,6 +151,7 @@ public class CreateEventsActivity extends BaseActivity {
             prgDialog.show();
             // Convert image to String using Base64
             encodeImagetoString();
+            new CreateNewProduct().execute();
             // When Image is not selected from Gallery
         } else {
             Toast.makeText(
@@ -147,6 +159,7 @@ public class CreateEventsActivity extends BaseActivity {
                     "You must select image from gallery before you try to upload",
                     Toast.LENGTH_LONG).show();
         }
+
     }
 
     // AsyncTask - To convert Image to String
@@ -247,6 +260,94 @@ public class CreateEventsActivity extends BaseActivity {
         if (prgDialog != null) {
             prgDialog.dismiss();
         }
+    }
+
+
+    class CreateNewProduct extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(CreateEventsActivity.this);
+            pDialog.setMessage("Creating Event..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        /**
+         * Creating product
+         * */
+        protected String doInBackground(String... args) {
+
+            String eventTitle = titlefld.getText().toString();
+            String date = dayfld.getText().toString();
+            String location = locationfld.getText().toString();
+            String categories = categoriesfld.getText().toString();
+            String description = descriptionfld.getText().toString();
+            String time  = timefld.getText().toString();
+
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("Image", imageFile));
+            params.add(new BasicNameValuePair("Name", eventTitle));
+            params.add(new BasicNameValuePair("Date", date));
+            params.add(new BasicNameValuePair("Location", location));
+            params.add(new BasicNameValuePair("Time", time));
+            params.add(new BasicNameValuePair("Description", description));
+
+            sendData(params);
+            pDialog.dismiss();
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+            pDialog.dismiss();
+        }
+
+    }
+
+    public void sendData(List<NameValuePair> params){
+        String result = "";
+        InputStream isr = null;
+        try{
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(CREATE_EVENT_URL); //YOUR PHP SCRIPT ADDRESS
+            //this is what gives the parameters to the url
+            httppost.setEntity(new UrlEncodedFormEntity(params));
+
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity entity = response.getEntity();
+            isr = entity.getContent();
+        }
+        catch(Exception e){
+            Log.e("log_tag", "Error in http connection " + e.toString());
+        }
+
+        //convert response to string
+        //useful for debugging so do not remove
+        try{
+            BufferedReader reader = new BufferedReader(new InputStreamReader(isr,"iso-8859-1"),8);
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            isr.close();
+
+            result=sb.toString();
+        }
+        catch(Exception e){
+            Log.e("log_tag", "Error  converting result "+e.toString());
+        }
+
     }
 
 }

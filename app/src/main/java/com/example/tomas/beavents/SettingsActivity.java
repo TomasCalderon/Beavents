@@ -23,16 +23,16 @@ public class SettingsActivity extends BaseActivity  {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
-        super.onCreateDrawer();
+
         // Display the fragment as the main content.
         FragmentManager mFragmentManager = getFragmentManager();
         FragmentTransaction mFragmentTransaction = mFragmentManager
                 .beginTransaction();
         PrefsFragment mPrefsFragment = new PrefsFragment();
-        mFragmentTransaction.replace(android.R.id.content, mPrefsFragment);
+        mFragmentTransaction.replace(R.id.content_frame, mPrefsFragment);
         mFragmentTransaction.commit();
 
-
+        super.onCreateDrawer();
 //        SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 //            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 //
@@ -102,6 +102,8 @@ public class SettingsActivity extends BaseActivity  {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
         {
+            if(!prefs.getAll().containsKey(key)) return;
+
             switch(key){
                 case "notification_on_off_preference": //TODO
                 case "notification_saved_only_preference": //TODO
@@ -114,27 +116,27 @@ public class SettingsActivity extends BaseActivity  {
                     clear_interest_preference_values(prefs);
                     break;
                 case "remove_interest_preference":
-                    removeInterest(prefs,prefs.getStringSet(key,null));
-                    clear_interest_preference_values(prefs);
-                    update_remove_interest_values();
+                    if(removeInterest(prefs,prefs.getStringSet(key,null))) {
+                        clear_interest_preference_values(prefs);
+                        update_remove_interest_values();
+                    }
                     break;
                 default:
                     System.out.println("ERROR: Key not found ("+key+")");
 
             }
-
             System.out.println("Preferences Changed: "+key);
             System.out.println(prefs.getAll());
 
 
         }
-        private void removeInterest(SharedPreferences prefs, Set<String> interests){
-            if(interests==null) return;
+        private boolean removeInterest(SharedPreferences prefs, Set<String> interests){
+            if(interests==null || interests.size()==0) return false;
 
             String all_interests=prefs.getString("user_interests","none");
             Gson gson = new Gson();
             if(all_interests.equals("none")){
-                return;
+                return false;
             }
             else {
                 String[] interest_list = gson.fromJson(all_interests, String[].class);
@@ -154,6 +156,8 @@ public class SettingsActivity extends BaseActivity  {
                 editor.putString("user_interests", gson.toJson(temp));
                 editor.commit();
             }
+
+            return true;
         }
 
         private void clear_interest_preference_values(SharedPreferences prefs) {
@@ -161,7 +165,10 @@ public class SettingsActivity extends BaseActivity  {
             ListPreference category_interest_preference = (ListPreference) findPreference("add_category_interest_preference");
             ListPreference course_interest_preference = (ListPreference) findPreference("add_course_interest_preference");
 
-            
+            remove_interest_preference.setValues(new HashSet<String>());
+            category_interest_preference.setValue("");
+            course_interest_preference.setValue("");
+
 
             SharedPreferences.Editor editor = prefs.edit();
             editor.remove("remove_interest_preference");
