@@ -144,13 +144,13 @@ public class CreateEventsActivity extends BaseActivity {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
                 SharedPreferences.Editor editor = prefs.edit();
                 Gson gson = new Gson();
-                String all_interests=prefs.getString("created_events","none");
-                if(all_interests.equals("none")){
+                String all_created_events=prefs.getString("created_events","none");
+                if(all_created_events.equals("none")){
                     String[] created_events_list=new String[]{fileName};
                     editor.putString("created_events", gson.toJson(created_events_list));
                     editor.commit();
                 } else{
-                    String[] created_events_list = gson.fromJson(all_interests, String[].class);
+                    String[] created_events_list = gson.fromJson(all_created_events, String[].class);
                     List<String> created_events = new ArrayList(Arrays.asList(created_events_list));
 
                     created_events.add(fileName);

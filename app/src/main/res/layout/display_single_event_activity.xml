@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!-- The main content view -->
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
@@ -11,7 +12,7 @@
             android:id="@+id/content_frame"
             android:layout_width="fill_parent"
             android:orientation="vertical"
-            android:layout_height="fill_parent" >
+            android:layout_height="fill_parent">
 
             <ImageView
                 android:id="@+id/eventImage"
@@ -19,39 +20,79 @@
                 android:layout_height="250dip"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:layout_marginBottom="30dp"/>
+                android:layout_marginBottom="10dp"/>
+            <Button
+                android:text="Save/Bookmark"
+                android:textColor="#141C11"
+                android:textSize="22sp"
+                android:id="@+id/saveButton"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/buttonshape"
+                android:layout_marginBottom="10dp"/>
 
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Name"
+                style="?android:attr/listSeparatorTextViewStyle" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:id="@+id/eventName"
                 android:layout_gravity="left"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Time"
+                style="?android:attr/listSeparatorTextViewStyle" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/eventTime"
                 android:layout_gravity="left"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Location"
+                style="?android:attr/listSeparatorTextViewStyle" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/eventLocation"
                 android:layout_gravity="left"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Description"
+                style="?android:attr/listSeparatorTextViewStyle" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:id="@+id/eventDescription"
                 android:layout_gravity="left"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
 
 
         </LinearLayout>
