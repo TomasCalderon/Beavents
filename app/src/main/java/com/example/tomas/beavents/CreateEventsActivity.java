@@ -409,7 +409,10 @@ public class CreateEventsActivity extends BaseActivity {
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             Button startTimeButton  = (Button) this.getActivity().findViewById(R.id.startTime);
-            startTimeButton.setText(hourOfDay+":"+minute);
+            String result = String.format("%02d:%02d AM",hourOfDay,minute);
+            if(hourOfDay>12) result=String.format("%02d:%02d PM",hourOfDay-12,minute);
+
+            startTimeButton.setText(result);
         }
     }
     public static class TimePickerFragment2 extends DialogFragment
@@ -429,7 +432,10 @@ public class CreateEventsActivity extends BaseActivity {
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             Button endTimeButton  = (Button) this.getActivity().findViewById(R.id.endTime);
-            endTimeButton.setText(hourOfDay+":"+minute);
+            String result = String.format("%02d:%02d AM",hourOfDay,minute);
+            if(hourOfDay>12) result=String.format("%02d:%02d PM",hourOfDay-12,minute);
+
+            endTimeButton.setText(result);
         }
     }
 
@@ -473,7 +479,7 @@ public class CreateEventsActivity extends BaseActivity {
             else courseNum1=courseNum1.split(" ")[1];
             if(courseNum2.equals("Select Course Number"))courseNum2="";
             else courseNum2=courseNum2.split(" ")[1];
-
+        
 
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
