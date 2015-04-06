@@ -4,10 +4,12 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -37,6 +40,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -130,9 +134,29 @@ public class MyCreatedEventActivity extends BaseActivity{
     }
 
     private String createQueryString() {
+        String elements= "'default'";
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        Gson gson = new Gson();
+        String all_saved_events=prefs.getString("created_events","none");
+        if(all_saved_events.equals("none")){
+            Log.e("heyllo", "not saving");
+        } else{
+            elements = "";
+            String[] created_events_list = gson.fromJson(all_saved_events, String[].class);
+            List<String> created_events = new ArrayList(Arrays.asList(created_events_list));
+            for(int i =0; i < created_events.size(); i++){
+                String event = created_events.get(i);
+                if(i == created_events.size() - 1){
+                    elements += "'"+event+"'";
+                }
+                else{
+                    elements += "'"+event+"',";
+                }
+            }
 
-        String elements= "'a','B'";
-        String queryString = "SELECT * FROM Events WHERE Name in ("+elements+")";
+        }
+        Log.e("heyllo", elements);
+        String queryString = "SELECT * FROM Events WHERE Image in ("+elements+")";
         return queryString ;
     }
 

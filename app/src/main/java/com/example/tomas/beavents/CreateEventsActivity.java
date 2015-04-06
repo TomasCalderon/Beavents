@@ -247,6 +247,8 @@ public class CreateEventsActivity extends BaseActivity {
                         prgDialog.hide();
                         Toast.makeText(getApplicationContext(), response,
                                 Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(CreateEventsActivity.this, MyCreatedEventActivity.class);
+                        startActivity(intent);
                     }
 
                     // When the response returned by REST has Http
