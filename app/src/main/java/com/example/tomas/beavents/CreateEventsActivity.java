@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -28,9 +30,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -127,13 +131,36 @@ public class CreateEventsActivity extends BaseActivity {
                 // Get the Image's file name
                 String fileNameSegments[] = imgPath.split("/");
                 fileName = fileNameSegments[fileNameSegments.length - 1];
+                Random rand = new Random();
+                for(int i =0; i < 4 ; i++){
+                    int randomNum = rand.nextInt(20) + 1;
+                    fileName = randomNum + fileName;
+                }
                 // Put file name in Async Http Post Param which will used in Php web app
 
 
                 this.imageFile = fileName;
                 params.put("filename", fileName);
 
+                //Put fileName into created_events
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                SharedPreferences.Editor editor = prefs.edit();
+                Gson gson = new Gson();
+                String all_created_events=prefs.getString("created_events","none");
+                if(all_created_events.equals("none")){
+                    String[] created_events_list=new String[]{fileName};
+                    editor.putString("created_events", gson.toJson(created_events_list));
+                    editor.commit();
+                } else{
+                    String[] created_events_list = gson.fromJson(all_created_events, String[].class);
+                    List<String> created_events = new ArrayList(Arrays.asList(created_events_list));
 
+                    created_events.add(fileName);
+                    String[] temp = new String[created_events.size()];
+                    temp = created_events.toArray(temp);
+                    editor.putString("created_events", gson.toJson(temp));
+                    editor.commit();
+                }
             } else {
                 Toast.makeText(this, "You haven't picked Image",
                         Toast.LENGTH_LONG).show();

@@ -86,4 +86,5 @@
         <item>some interest2</item>
         <item>some interest3</item>
     </string-array>
+    <string-array name="empty_array" />
 </resources>
