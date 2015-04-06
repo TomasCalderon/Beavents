@@ -470,7 +470,9 @@ public class CreateEventsActivity extends BaseActivity {
             if(cat2.equals("Select a Category"))cat2="";
             if(cat3.equals("Select a Category"))cat3="";
             if(courseNum1.equals("Select Course Number"))courseNum1="";
+            else courseNum1=courseNum1.split(" ")[1];
             if(courseNum2.equals("Select Course Number"))courseNum2="";
+            else courseNum2=courseNum2.split(" ")[1];
 
 
             // Building Parameters
