@@ -12,15 +12,15 @@
     <string name="home">Home</string>
     <string name="categories">Categories</string>
     <string name="create_events">Create Events</string>
-    <string name="saved_events">Saved Events</string>
-    <string name="created_events">Created Events</string>
+    <string name="saved_events">My Saved Events</string>
+    <string name="created_events">My Created Events</string>
     <string name="settings">Settings</string>
     <string-array name= "menu">
         <item >Home</item>
         <item>Categories</item>
         <item>Create Event</item>
-        <item>Saved Events</item>
-        <item>Created Events</item>
+        <item>My Saved Events</item>
+        <item>My Created Events</item>
         <item>Settings</item>
     </string-array>
 

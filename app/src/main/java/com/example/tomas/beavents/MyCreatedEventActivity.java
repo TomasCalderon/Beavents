@@ -139,7 +139,6 @@ public class MyCreatedEventActivity extends BaseActivity{
         Gson gson = new Gson();
         String all_saved_events=prefs.getString("created_events","none");
         if(all_saved_events.equals("none")){
-            Log.e("heyllo", "not saving");
         } else{
             elements = "";
             String[] created_events_list = gson.fromJson(all_saved_events, String[].class);
@@ -155,7 +154,6 @@ public class MyCreatedEventActivity extends BaseActivity{
             }
 
         }
-        Log.e("heyllo", elements);
         String queryString = "SELECT * FROM Events WHERE Image in ("+elements+")";
         return queryString ;
     }
@@ -191,7 +189,6 @@ public class MyCreatedEventActivity extends BaseActivity{
 
             result=sb.toString();
 
-            Log.e("what", result);
         }
         catch(Exception e){
             Log.e("log_tag", "Error  converting result "+e.toString());
