@@ -34,57 +34,97 @@
 
 
     <string-array name="course_list_preference">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
+        <item>Course 1</item>
+        <item>Course 2</item>
+        <item>Course 3</item>
+        <item>Course 4</item>
+        <item>Course 5</item>
+        <item>Course 6</item>
+        <item>Course 7</item>
+        <item>Course 8</item>
+        <item>Course 9</item>
+        <item>Course 10</item>
+        <item>Course 11</item>
+        <item>Course 12</item>
+        <item>Course 14</item>
+        <item>Course 15</item>
+        <item>Course 16</item>
+        <item>Course 17</item>
+        <item>Course 18</item>
+        <item>Course 19</item>
+        <item>Course 20</item>
+        <item>Course 21</item>
+        <item>Course 22</item>
+        <item>Course 24</item>
     </string-array>
 
+
+
     <string-array name="coursevalues_list_preference">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
+        <item>Course 1</item>
+        <item>Course 2</item>
+        <item>Course 3</item>
+        <item>Course 4</item>
+        <item>Course 5</item>
+        <item>Course 6</item>
+        <item>Course 7</item>
+        <item>Course 8</item>
+        <item>Course 9</item>
+        <item>Course 10</item>
+        <item>Course 11</item>
+        <item>Course 12</item>
+        <item>Course 14</item>
+        <item>Course 15</item>
+        <item>Course 16</item>
+        <item>Course 17</item>
+        <item>Course 18</item>
+        <item>Course 19</item>
+        <item>Course 20</item>
+        <item>Course 21</item>
+        <item>Course 22</item>
+        <item>Course 24</item>
     </string-array>
+
+
+    <string-array name="category_spinner">
+        <item>Select a Category</item>
+        <item>Free Food</item>
+        <item>Pset Parties</item>
+        <item>Arts/Film</item>
+        <item>Sports</item>
+        <item>Job Opportunities</item>
+        <item>Talks</item>
+    </string-array>
+
+    <string-array name="course_spinner">
+        <item>Select Course Number</item>
+        <item>Course 1</item>
+        <item>Course 2</item>
+        <item>Course 3</item>
+        <item>Course 4</item>
+        <item>Course 5</item>
+        <item>Course 6</item>
+        <item>Course 7</item>
+        <item>Course 8</item>
+        <item>Course 9</item>
+        <item>Course 10</item>
+        <item>Course 11</item>
+        <item>Course 12</item>
+        <item>Course 14</item>
+        <item>Course 15</item>
+        <item>Course 16</item>
+        <item>Course 17</item>
+        <item>Course 18</item>
+        <item>Course 19</item>
+        <item>Course 20</item>
+        <item>Course 21</item>
+        <item>Course 22</item>
+        <item>Course 24</item>
+    </string-array>
+
 
 
     <string-array name="user_interests">
-        <item>some interest</item>
-        <item>some interest1</item>
-        <item>some interest2</item>
-        <item>some interest3</item>
     </string-array>
     <string-array name="empty_array" />
 </resources>

@@ -19,16 +19,14 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:weightSum="1">
+
                 <TextView
-                     android:layout_width="fill_parent"
-                     android:layout_height="45dp"
-                     android:textAppearance="?android:attr/textAppearanceLarge"
-                     android:text="Create An Event"
-                     android:id="@+id/createEventTitle"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:text="Event Name"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    android:background="#33b5e5"
+                    android:padding="10px" />
 
                 <EditText
                     android:layout_width="fill_parent"
@@ -36,49 +34,161 @@
                     android:id="@+id/eventTitle"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="60dp"
-                    android:hint="Event Name"
-                    android:gravity="center_horizontal" />
+                    android:hint="(name)"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"/>
 
-                <EditText
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Date/Time"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    android:background="#33b5e5"
+                    android:padding="10px" />
+                <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/date"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/eventTitle"
-                    android:hint="mm/dd/yyyy"
-                    android:gravity="center_horizontal" />
+                    android:text="@string/pick_date"
+                    android:onClick="showDatePickerDialog"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#dadada"
+                    android:layout_marginBottom="10dp" />
 
-                <EditText
-                    android:layout_width="fill_parent"
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/time"
-                    android:hint="00:00 am - 00:00 pm"
+                    android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
-                    android:layout_below="@+id/date"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_weight="2.24"
+                    style="@style/Base.TextAppearance.AppCompat.Body1">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/startTime"
+                        android:text="@string/pick_start"
+                        android:onClick="showDatePickerDialog"
+                        android:layout_gravity="center_horizontal"
+                        android:background="#dadada"
+                        />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TO"
+                        android:id="@+id/textView"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/endTime"
+                        android:text="@string/pick_end"
+                        android:onClick="showDatePickerDialog"
+                        android:layout_gravity="center_horizontal"
+                        android:background="#dadada"/>
+                    </LinearLayout>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Location"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    android:background="#33b5e5"
+                    android:padding="10px" />
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/location"
-                    android:hint="Location"
+                    android:hint="(location)"
                     android:gravity="center_horizontal"
                     android:layout_below="@+id/time"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
 
-                <EditText
-                    android:layout_width="fill_parent"
+                <TextView
                     android:layout_height="wrap_content"
-                    android:id="@+id/categories"
-                    android:hint="Categories"
-                    android:gravity="center_horizontal"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Relevant Course (max 2)"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    android:background="#33b5e5"
+                    android:padding="10px" />
 
+
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/course1"
+                    android:gravity="center_horizontal"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="5dp"
+                    android:padding="10px" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/course2"
+                    android:gravity="center_horizontal"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="5dp"
+                    android:padding="10px" />
+                <!--<Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/course3"
+                    android:gravity="center_horizontal"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />-->
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Relevant Categories (max 3)"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    android:background="#33b5e5"
+                    android:padding="10px" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/category1"
+                    android:gravity="center_horizontal"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="5dp"
+                    android:padding="10px" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/category2"
+                    android:gravity="center_horizontal"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="5dp"
+                    android:padding="10px" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/category3"
+                    android:gravity="center_horizontal"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:padding="10px" />
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Description"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    android:background="#33b5e5"
+                    android:padding="10px" />
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="175dp"
@@ -88,6 +198,14 @@
                     android:layout_below="@+id/categories"
                     android:layout_centerHorizontal="true" />
 
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Choose Image"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    android:background="#33b5e5"
+                    android:padding="10px" />
                 <Button
                     android:id="@+id/buttonLoadPicture"
                     android:layout_width="wrap_content"
@@ -95,7 +213,9 @@
                     android:layout_gravity="center"
                     android:layout_weight="0"
                     android:onClick="loadImagefromGallery"
-                    android:text="Load Picture" />
+                    android:text="Load Picture"
+                    android:layout_marginBottom="10dp"
+                    android:background="#dadada" />
 
                 <ImageView
                     android:src="@android:drawable/ic_menu_gallery"
@@ -108,7 +228,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:onClick="uploadImage"
-                    android:text="Upload" />
+                    android:text="Upload"
+                    android:background="#dadada"/>
 
             </LinearLayout>
         </ScrollView>

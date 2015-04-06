@@ -1,8 +1,12 @@
 package com.example.tomas.beavents;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -13,16 +17,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.text.Editable;
 import android.widget.ImageView;
 
+import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -31,6 +37,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -47,9 +54,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import static android.widget.ArrayAdapter.*;
 
 
 /**
@@ -69,11 +75,17 @@ public class CreateEventsActivity extends BaseActivity {
     private static int RESULT_LOAD_IMG = 1;
 
     public EditText titlefld;
-    public EditText dayfld;
+    public Button dayfld;
+    public Button startTimefld;
+    public Button endTimefld;
     public EditText locationfld;
-    public EditText categoriesfld;
     public EditText descriptionfld;
-    public EditText timefld;
+    public Spinner course1;
+    public Spinner course2;
+    public Spinner course3;
+    public Spinner category1;
+    public Spinner category2;
+    public Spinner category3;
 
     public String imageFile;
     @Override
@@ -87,11 +99,73 @@ public class CreateEventsActivity extends BaseActivity {
         prgDialog.setCancelable(false);
 
         titlefld = (EditText) findViewById(R.id.eventTitle);
-        dayfld = (EditText) findViewById(R.id.date);
-        timefld = (EditText) findViewById(R.id.time);
+        dayfld = (Button) findViewById(R.id.date);
+        startTimefld= (Button) findViewById(R.id.startTime);
+        endTimefld = (Button) findViewById(R.id.endTime);
         locationfld = (EditText) findViewById(R.id.location);
-        categoriesfld = (EditText) findViewById(R.id.categories);
         descriptionfld = (EditText) findViewById(R.id.description);
+
+        dayfld.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                showDatePickerDialog(v);                }
+        });
+        startTimefld.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                showTimePickerDialog1(v);                }
+        });
+        endTimefld.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showTimePickerDialog2(v);
+            }
+        });
+        loadSpinners();
+
+    }
+
+    private void loadSpinners() {
+        course1 = (Spinner) findViewById(R.id.course1);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = createFromResource(this,
+                R.array.course_spinner, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        course1.setAdapter(adapter);
+
+        course2 = (Spinner) findViewById(R.id.course2);
+        course2.setAdapter(adapter);
+/*
+        course3 = (Spinner) findViewById(R.id.course3);
+        course3.setAdapter(adapter);*/
+        ArrayAdapter<CharSequence> adapter2 = createFromResource(this,
+                R.array.category_spinner, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        category1 = (Spinner) findViewById(R.id.category1);
+        category2 = (Spinner) findViewById(R.id.category2);
+        category3 = (Spinner) findViewById(R.id.category3);
+
+        category1.setAdapter(adapter2);
+        category2.setAdapter(adapter2);
+        category3.setAdapter(adapter2);
+    }
+
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(),"datePicker");
+        //newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    public void showTimePickerDialog1(View v) {
+        DialogFragment newFragment = new TimePickerFragment1();
+        newFragment.show(getFragmentManager(),"timePicker");
+        //newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+    public void showTimePickerDialog2(View v) {
+        DialogFragment newFragment = new TimePickerFragment2();
+        newFragment.show(getFragmentManager(),"timePicker");
+        //newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
     public void loadImagefromGallery(View view) {
@@ -285,11 +359,77 @@ public class CreateEventsActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
         // Dismiss the progress bar when application is closed
         if (prgDialog != null) {
             prgDialog.dismiss();
+        }
+    }
+
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            System.out.println(month+"/"+day+"/"+year);
+            Button dateButton  = (Button) this.getActivity().findViewById(R.id.date);
+            dateButton.setText(month+"/"+day+"/"+year);
+        }
+    }
+
+    /**
+     * I am dumb and this is currently the only solution I can think of
+     */
+    public static class TimePickerFragment1 extends DialogFragment
+            implements TimePickerDialog.OnTimeSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current time as the default values for the picker
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            // Create a new instance of TimePickerDialog and return it
+            return new TimePickerDialog(getActivity(), this, hour, minute,
+                    DateFormat.is24HourFormat(getActivity()));
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            Button startTimeButton  = (Button) this.getActivity().findViewById(R.id.startTime);
+            startTimeButton.setText(hourOfDay+":"+minute);
+        }
+    }
+    public static class TimePickerFragment2 extends DialogFragment
+            implements TimePickerDialog.OnTimeSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current time as the default values for the picker
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            // Create a new instance of TimePickerDialog and return it
+            return new TimePickerDialog(getActivity(), this, hour, minute,
+                    DateFormat.is24HourFormat(getActivity()));
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            Button endTimeButton  = (Button) this.getActivity().findViewById(R.id.endTime);
+            endTimeButton.setText(hourOfDay+":"+minute);
         }
     }
 
@@ -317,9 +457,21 @@ public class CreateEventsActivity extends BaseActivity {
             String eventTitle = titlefld.getText().toString();
             String date = dayfld.getText().toString();
             String location = locationfld.getText().toString();
-            String categories = categoriesfld.getText().toString();
+            //String categories = categoriesfld.getText().toString();
             String description = descriptionfld.getText().toString();
-            String time  = timefld.getText().toString();
+            String time  = startTimefld.getText().toString()+" to "+endTimefld.getText().toString();
+            String cat1= category1.getSelectedItem().toString();
+            String cat2= category2.getSelectedItem().toString();
+            String cat3= category3.getSelectedItem().toString();
+            String courseNum1= course1.getSelectedItem().toString();
+            String courseNum2= course2.getSelectedItem().toString();
+
+            if(cat1.equals("Select a Category"))cat1="";
+            if(cat2.equals("Select a Category"))cat2="";
+            if(cat3.equals("Select a Category"))cat3="";
+            if(courseNum1.equals("Select Course Number"))courseNum1="";
+            if(courseNum2.equals("Select Course Number"))courseNum2="";
+
 
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -329,6 +481,11 @@ public class CreateEventsActivity extends BaseActivity {
             params.add(new BasicNameValuePair("Location", location));
             params.add(new BasicNameValuePair("Time", time));
             params.add(new BasicNameValuePair("Description", description));
+            params.add(new BasicNameValuePair("Category1",cat1));
+            params.add(new BasicNameValuePair("Category2",cat2));
+            params.add(new BasicNameValuePair("Category3",cat3));
+            params.add(new BasicNameValuePair("CourseNum1",courseNum1));
+            params.add(new BasicNameValuePair("CourseNum2",courseNum2));
 
             sendData(params);
             pDialog.dismiss();

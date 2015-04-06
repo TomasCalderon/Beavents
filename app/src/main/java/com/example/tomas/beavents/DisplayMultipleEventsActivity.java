@@ -242,7 +242,6 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
 
 
             imageLoader.displayImage(IMAGEBASE + imagePaths.get(position)
-
                     , gridViewImageHolder.imageView
                     , options);
 
