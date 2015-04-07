@@ -308,7 +308,7 @@ public class CreateEventsActivity extends BaseActivity {
     // http://192.168.2.4:9999/ImageUploadWebApp/uploadimg.jsp
     // Make Http call to upload Image to Php server
     public void makeHTTPCall() {
-        prgDialog.setMessage("Invoking Php");
+        prgDialog.setMessage("Almost there");
         AsyncHttpClient client = new AsyncHttpClient();
         // Don't forget to change the IP address to your LAN address. Port no as well.
         client.post("http://beavents.net84.net/upload_image.php",
@@ -319,8 +319,8 @@ public class CreateEventsActivity extends BaseActivity {
                     public void onSuccess(String response) {
                         // Hide Progress Dialog
                         prgDialog.hide();
-                        Toast.makeText(getApplicationContext(), response,
-                                Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), response,
+                        //        Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(CreateEventsActivity.this, MyCreatedEventActivity.class);
                         startActivity(intent);
                     }
