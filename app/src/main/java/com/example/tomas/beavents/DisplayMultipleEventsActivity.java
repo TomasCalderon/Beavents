@@ -37,8 +37,10 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -140,14 +142,14 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             Gson gson = new Gson();
             String interests=prefs.getString("user_interests","none");
-            if(interests.equals("none")){
-                return "SELECT * FROM Events WHERE Image = 'default.png'";
+
+            if(interests.equals("[]")){
+                return "SELECT * FROM Events WHERE CourseNum1 = 25";
             }else {
                 String[] interests_list = gson.fromJson(interests, String[].class);
                 List<String> all_interests = new ArrayList(Arrays.asList(interests_list));
                 String categories = getCategoriesQueryString(all_interests);
                 String courseNums = getCourseNumberQueryString(all_interests);
-                Log.e("please",categories);
                 Log.e("please",courseNums);
                 String queryString = "SELECT * FROM Events WHERE Category1 in " + categories+ " or Category2 in "+categories
                         + " or Category3 in " + categories + " or CourseNum1 in " + courseNums + " or CourseNum2 in " + courseNums ;
@@ -159,7 +161,7 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             String a = "SELECT * FROM Events WHERE CourseNum1 =" + courseNumber+ " or CourseNum2 ="+courseNumber;
             return a;
         }else if(eventsToDisplay.equals("ALL")){
-            return "SELECT * FROM Events";
+            return "SELECT * FROM Events WHERE CourseNum1 NOT in (25)";
         }
         else{
             eventsToDisplay = "'"+eventsToDisplay+"'";
@@ -184,6 +186,10 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
                 }
             }
         }
+        if(categories.equals("(")){
+            //To avoid errors, we return a nonempty query.
+            return "('b')";
+        }
         return categories+")";
     }
 
@@ -200,6 +206,10 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
                     courseNums += ","+currentInterest.split(" ")[1] ;
                 }
             }
+        }
+        if(courseNums.equals("(")){
+            //To avoid errors, we return a nonempty query.
+            return "(30)";
         }
         return courseNums+")";
     }
@@ -244,7 +254,30 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             for(int i=0; i<jArray.length();i++){
                 JSONObject json = jArray.getJSONObject(i);
                 Event fetchedEvent = parseEvent(json);
-                loadedEvents.add(fetchedEvent);
+
+                //Integer[] date = DisplaySingleEventActivity.convertEventDate(fetchedEvent.getDate());
+                Integer[] time = DisplaySingleEventActivity.convertEventTime(fetchedEvent.getTime());
+
+                Date currentDate = new Date();
+                boolean eventOccursAfter=false;
+                if(fetchedEvent.getDate().length()==0)eventOccursAfter=true;
+                else if(time.length==0){ //All day
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                    Date d = sdf.parse(fetchedEvent.getDate());
+                    if(d.after(currentDate))eventOccursAfter=true;
+                }
+                else{
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                    Date d = sdf.parse(fetchedEvent.getDate()+" "+String.format("%02d:%02d",time[0],time[1]));
+                    if(d.after(currentDate))eventOccursAfter=true;
+                }
+
+                if(eventOccursAfter){
+                    loadedEvents.add(fetchedEvent);
+                    imagePaths.add(fetchedEvent.getImage());
+                }
+
+                //System.out.println(eventOccursAfter);
             }
         } catch (Exception e) {
             // TODO: handle exception
@@ -303,7 +336,6 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             imageLoader.displayImage(IMAGEBASE + imagePaths.get(position)
                     , gridViewImageHolder.imageView
                     , options);
-
             name = (TextView) view.getTag(R.id.text);
             name.setText(loadedEvents.get(position).getName()+"\n"+ loadedEvents.get(position).getDate() + "\n"+ loadedEvents.get(position).getTime());
 
@@ -315,7 +347,6 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
         try {
 
             String image = json.getString("Image");
-            imagePaths.add(image);
 
             String name = json.getString("Name");
             String date = json.getString("Date");
