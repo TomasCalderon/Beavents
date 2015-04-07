@@ -137,13 +137,13 @@ public class BaseActivity extends ActionBarActivity implements AdapterView.OnIte
 
     public Intent chosenScreenIntent(String optionChosen){
         switch(optionChosen){
-            case "Home":
-                return new Intent(this, MainActivity.class);
-            case "All Events":
-                String eventsToDisplay = "ALL";
+            case "Suggested Events":
+                String eventsToDisplay = "INTERESTS";
                 Intent intent = new Intent(this, DisplayMultipleEventsActivity.class);
                 intent.putExtra("eventsToDisplay", eventsToDisplay);
                 return intent;
+            case "All Events":
+                return new Intent(this, MainActivity.class);
             case "Search by Categories":
                 return new Intent(this, CategoriesActivity.class);
             case "Search by Course Number":

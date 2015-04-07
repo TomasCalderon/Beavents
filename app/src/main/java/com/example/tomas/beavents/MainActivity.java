@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Intent intent = new Intent(MainActivity.this, DisplayMultipleEventsActivity.class);
-        String eventsToDisplay = "INTERESTS";
+        String eventsToDisplay = "ALL";
         intent.putExtra("eventsToDisplay", eventsToDisplay);
         startActivity(intent);
 
