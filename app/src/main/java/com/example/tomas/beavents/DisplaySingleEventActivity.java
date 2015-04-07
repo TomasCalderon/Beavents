@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,10 +19,18 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +42,7 @@ import java.util.List;
  */
 public class DisplaySingleEventActivity extends BaseActivity {
 
+    private static final String DELETE_EVENT_URL = "http://beavents.net84.net/get_some_images.php";
     private Event mEvent;
 
     private ProgressDialog pDialog;
@@ -75,10 +85,10 @@ public class DisplaySingleEventActivity extends BaseActivity {
             deleteButton.setVisibility(View.VISIBLE);
         };
 
-//        deleteButton.setOnClickListener(new View.OnClickListener(){
-//            public void onClick(View v){
-//                deleteCurrentEvent();                }
-//        });
+        deleteButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                deleteCurrentEvent();                }
+        });
     }
 
 
@@ -311,79 +321,93 @@ public class DisplaySingleEventActivity extends BaseActivity {
         }
     }
 
-//    private void deleteCurrentEvent() {
-//        new DeleteEvent().execute();
-//    }
-//
-//    class DeleteEvent extends AsyncTask<String, String, String> {
-//
-//        /**
-//         * Before starting background thread Show Progress Dialog
-//         * */
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            pDialog = new ProgressDialog(DisplaySingleEventActivity.this);
-//            pDialog.setMessage("Deleting Event..");
-//            pDialog.setIndeterminate(false);
-//            pDialog.setCancelable(true);
-//            pDialog.show();
-//        }
-//
-//        /**
-//         * Creating product
-//         * */
-//        protected String doInBackground(String... args) {
-//
-//            String eventTitle = titlefld.getText().toString();
-//            String date = dayfld.getText().toString();
-//            String location = locationfld.getText().toString();
-//            //String categories = categoriesfld.getText().toString();
-//            String description = descriptionfld.getText().toString();
-//            String time  = startTimefld.getText().toString()+" to "+endTimefld.getText().toString();
-//            String cat1= category1.getSelectedItem().toString();
-//            String cat2= category2.getSelectedItem().toString();
-//            String cat3= category3.getSelectedItem().toString();
-//
-//
-//            String courseNum1= course1.getSelectedItem().toString();
-//            String courseNum2= course2.getSelectedItem().toString();
-//
-//            if(cat1.equals("Select a Category"))cat1="";
-//            if(cat2.equals("Select a Category"))cat2="";
-//            if(cat3.equals("Select a Category"))cat3="";
-//            if(courseNum1.equals("Select Course Number"))courseNum1="0";
-//            else courseNum1=courseNum1.split(" ")[1];
-//            if(courseNum2.equals("Select Course Number"))courseNum2="0";
-//            else courseNum2=courseNum2.split(" ")[1];
-//
-//
-//            // Building Parameters
-//            List<NameValuePair> params = new ArrayList<NameValuePair>();
-//            params.add(new BasicNameValuePair("Image", imageFile));
-//            params.add(new BasicNameValuePair("Name", eventTitle));
-//            params.add(new BasicNameValuePair("Date", date));
-//            params.add(new BasicNameValuePair("Location", location));
-//            params.add(new BasicNameValuePair("Time", time));
-//            params.add(new BasicNameValuePair("Description", description));
-//            params.add(new BasicNameValuePair("Category1",cat1));
-//            params.add(new BasicNameValuePair("Category2",cat2));
-//            params.add(new BasicNameValuePair("Category3",cat3));
-//            params.add(new BasicNameValuePair("CourseNum1",courseNum1));
-//            params.add(new BasicNameValuePair("CourseNum2",courseNum2));
-//
-//            sendData(params);
-//            pDialog.dismiss();
-//            return null;
-//        }
-//
-//        /**
-//         * After completing background task Dismiss the progress dialog
-//         * **/
-//        protected void onPostExecute(String file_url) {
-//            // dismiss the dialog once done
-//            pDialog.dismiss();
-//        }
+    private void deleteCurrentEvent() {
+        new DeleteEvent().execute();
+    }
 
+    class DeleteEvent extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(DisplaySingleEventActivity.this);
+            pDialog.setMessage("Deleting Event..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        /**
+         * Creating product
+         * */
+        protected String doInBackground(String... args) {
+
+            String eventImage = mEvent.getImage();
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            String queryString = createQueryString(eventImage);
+            Log.d("ai",queryString);
+            params.add(new BasicNameValuePair("Query", queryString));
+            sendData(params);
+
+
+            pDialog.dismiss();
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+            pDialog.dismiss();
+            Intent intent = new Intent(DisplaySingleEventActivity.this, MyCreatedEventActivity.class);
+            startActivity(intent);
+        }
+
+}
+
+    private String createQueryString(String eventImage) {
+        return "DELETE from Events WHERE Image = '"+eventImage + "'";
+
+    }
+
+    private void sendData(List<NameValuePair> params) {
+        String result = "";
+        InputStream isr = null;
+        try{
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(DELETE_EVENT_URL); //YOUR PHP SCRIPT ADDRESS
+            //this is what gives the parameters to the url
+            httppost.setEntity(new UrlEncodedFormEntity(params));
+
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity entity = response.getEntity();
+            isr = entity.getContent();
+        }
+        catch(Exception e){
+            Log.e("log_tag", "Error in http connection " + e.toString());
+        }
+
+        //convert response to string
+        //useful for debugging so do not remove
+        try{
+            BufferedReader reader = new BufferedReader(new InputStreamReader(isr,"iso-8859-1"),8);
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            isr.close();
+
+            result=sb.toString();
+        }
+        catch(Exception e){
+            Log.e("log_tag", "Error  converting result "+e.toString());
+        }
+    }
 }
 
