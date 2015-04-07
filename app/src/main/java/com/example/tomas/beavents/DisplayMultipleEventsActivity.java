@@ -147,7 +147,6 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
                 List<String> all_interests = new ArrayList(Arrays.asList(interests_list));
                 String categories = getCategoriesQueryString(all_interests);
                 String courseNums = getCourseNumberQueryString(all_interests);
-                Log.e("please",categories);
                 Log.e("please",courseNums);
                 String queryString = "SELECT * FROM Events WHERE Category1 in " + categories+ " or Category2 in "+categories
                         + " or Category3 in " + categories + " or CourseNum1 in " + courseNums + " or CourseNum2 in " + courseNums ;
@@ -184,6 +183,10 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
                 }
             }
         }
+        if(categories.equals("(")){
+            //To avoid errors, we return a nonempty query.
+            return "('b')";
+        }
         return categories+")";
     }
 
@@ -200,6 +203,10 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
                     courseNums += ","+currentInterest.split(" ")[1] ;
                 }
             }
+        }
+        if(courseNums.equals("(")){
+            //To avoid errors, we return a nonempty query.
+            return "(30)";
         }
         return courseNums+")";
     }
