@@ -18,6 +18,9 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,7 +35,7 @@ public class DisplaySingleEventActivity extends BaseActivity {
 
     private Event mEvent;
 
-
+    private ProgressDialog pDialog;
 
     private ImageView mImageView;
     private Bitmap mBitmap;
@@ -65,11 +68,20 @@ public class DisplaySingleEventActivity extends BaseActivity {
                 addToCalendar();                }
         });
 
+
+
         Button deleteButton = (Button) findViewById(R.id.deleteButton);
         if(this.checkIfCreatedByUser(mEvent.getImage())){
             deleteButton.setVisibility(View.VISIBLE);
         };
+
+//        deleteButton.setOnClickListener(new View.OnClickListener(){
+//            public void onClick(View v){
+//                deleteCurrentEvent();                }
+//        });
     }
+
+
 
     private boolean checkIfCreatedByUser(String fileName) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -298,6 +310,80 @@ public class DisplaySingleEventActivity extends BaseActivity {
             }
         }
     }
+
+//    private void deleteCurrentEvent() {
+//        new DeleteEvent().execute();
+//    }
+//
+//    class DeleteEvent extends AsyncTask<String, String, String> {
+//
+//        /**
+//         * Before starting background thread Show Progress Dialog
+//         * */
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            pDialog = new ProgressDialog(DisplaySingleEventActivity.this);
+//            pDialog.setMessage("Deleting Event..");
+//            pDialog.setIndeterminate(false);
+//            pDialog.setCancelable(true);
+//            pDialog.show();
+//        }
+//
+//        /**
+//         * Creating product
+//         * */
+//        protected String doInBackground(String... args) {
+//
+//            String eventTitle = titlefld.getText().toString();
+//            String date = dayfld.getText().toString();
+//            String location = locationfld.getText().toString();
+//            //String categories = categoriesfld.getText().toString();
+//            String description = descriptionfld.getText().toString();
+//            String time  = startTimefld.getText().toString()+" to "+endTimefld.getText().toString();
+//            String cat1= category1.getSelectedItem().toString();
+//            String cat2= category2.getSelectedItem().toString();
+//            String cat3= category3.getSelectedItem().toString();
+//
+//
+//            String courseNum1= course1.getSelectedItem().toString();
+//            String courseNum2= course2.getSelectedItem().toString();
+//
+//            if(cat1.equals("Select a Category"))cat1="";
+//            if(cat2.equals("Select a Category"))cat2="";
+//            if(cat3.equals("Select a Category"))cat3="";
+//            if(courseNum1.equals("Select Course Number"))courseNum1="0";
+//            else courseNum1=courseNum1.split(" ")[1];
+//            if(courseNum2.equals("Select Course Number"))courseNum2="0";
+//            else courseNum2=courseNum2.split(" ")[1];
+//
+//
+//            // Building Parameters
+//            List<NameValuePair> params = new ArrayList<NameValuePair>();
+//            params.add(new BasicNameValuePair("Image", imageFile));
+//            params.add(new BasicNameValuePair("Name", eventTitle));
+//            params.add(new BasicNameValuePair("Date", date));
+//            params.add(new BasicNameValuePair("Location", location));
+//            params.add(new BasicNameValuePair("Time", time));
+//            params.add(new BasicNameValuePair("Description", description));
+//            params.add(new BasicNameValuePair("Category1",cat1));
+//            params.add(new BasicNameValuePair("Category2",cat2));
+//            params.add(new BasicNameValuePair("Category3",cat3));
+//            params.add(new BasicNameValuePair("CourseNum1",courseNum1));
+//            params.add(new BasicNameValuePair("CourseNum2",courseNum2));
+//
+//            sendData(params);
+//            pDialog.dismiss();
+//            return null;
+//        }
+//
+//        /**
+//         * After completing background task Dismiss the progress dialog
+//         * **/
+//        protected void onPostExecute(String file_url) {
+//            // dismiss the dialog once done
+//            pDialog.dismiss();
+//        }
 
 }
 

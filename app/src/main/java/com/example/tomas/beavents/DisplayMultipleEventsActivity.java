@@ -142,14 +142,14 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             Gson gson = new Gson();
             String interests=prefs.getString("user_interests","none");
-            if(interests.equals("none")){
-                return "SELECT * FROM Events WHERE Image = 'default.png'";
+
+            if(interests.equals("[]")){
+                return "SELECT * FROM Events WHERE CourseNum1 = 25";
             }else {
                 String[] interests_list = gson.fromJson(interests, String[].class);
                 List<String> all_interests = new ArrayList(Arrays.asList(interests_list));
                 String categories = getCategoriesQueryString(all_interests);
                 String courseNums = getCourseNumberQueryString(all_interests);
-                Log.e("please",categories);
                 Log.e("please",courseNums);
                 String queryString = "SELECT * FROM Events WHERE Category1 in " + categories+ " or Category2 in "+categories
                         + " or Category3 in " + categories + " or CourseNum1 in " + courseNums + " or CourseNum2 in " + courseNums ;
@@ -161,7 +161,7 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             String a = "SELECT * FROM Events WHERE CourseNum1 =" + courseNumber+ " or CourseNum2 ="+courseNumber;
             return a;
         }else if(eventsToDisplay.equals("ALL")){
-            return "SELECT * FROM Events";
+            return "SELECT * FROM Events WHERE CourseNum1 NOT in (25)";
         }
         else{
             eventsToDisplay = "'"+eventsToDisplay+"'";
@@ -186,6 +186,10 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
                 }
             }
         }
+        if(categories.equals("(")){
+            //To avoid errors, we return a nonempty query.
+            return "('b')";
+        }
         return categories+")";
     }
 
@@ -202,6 +206,10 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
                     courseNums += ","+currentInterest.split(" ")[1] ;
                 }
             }
+        }
+        if(courseNums.equals("(")){
+            //To avoid errors, we return a nonempty query.
+            return "(30)";
         }
         return courseNums+")";
     }
