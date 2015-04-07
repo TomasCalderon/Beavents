@@ -85,15 +85,15 @@ public class BaseActivity extends ActionBarActivity implements AdapterView.OnIte
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
+        //inflater.inflate(R.menu.options_menu, menu);
 
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search).getActionView();
-        ComponentName cn = new ComponentName(this,SearchResultsActivity.class);
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(cn));
+        //SearchManager searchManager =
+        //        (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        //SearchView searchView =
+        //        (SearchView) menu.findItem(R.id.search).getActionView();
+        //ComponentName cn = new ComponentName(this,SearchResultsActivity.class);
+        //searchView.setSearchableInfo(
+        //        searchManager.getSearchableInfo(cn));
 
         return super.onCreateOptionsMenu(menu);
     }
