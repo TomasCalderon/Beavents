@@ -125,7 +125,7 @@ public class BaseActivity extends ActionBarActivity implements AdapterView.OnIte
         mDrawerList.setItemChecked(position, true);
 
         Intent intent = chosenScreenIntent(mMenuOptions[position]);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         mDrawerLayout.closeDrawer(mDrawerList);
     }

@@ -64,7 +64,26 @@ public class DisplaySingleEventActivity extends BaseActivity {
             public void onClick(View v){
                 addToCalendar();                }
         });
+
+        Button deleteButton = (Button) findViewById(R.id.deleteButton);
+        if(this.checkIfCreatedByUser(mEvent.getImage())){
+            deleteButton.setVisibility(View.VISIBLE);
+        };
     }
+
+    private boolean checkIfCreatedByUser(String fileName) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String saved_events=prefs.getString("created_events","none");
+        if(saved_events.equals("none")){
+            return false;
+        } else{
+            Gson gson = new Gson();
+            String[] events_list = gson.fromJson(saved_events, String[].class);
+            List<String> events = new ArrayList(Arrays.asList(events_list));
+            return events.contains(fileName);
+        }
+    }
+
     private Integer[] convertEventTime(){
         // Converts event's time to and integer array
         //      If time is not valid: returns []
