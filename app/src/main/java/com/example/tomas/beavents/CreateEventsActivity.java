@@ -319,8 +319,8 @@ public class CreateEventsActivity extends BaseActivity {
                     public void onSuccess(String response) {
                         // Hide Progress Dialog
                         prgDialog.hide();
-                        //Toast.makeText(getApplicationContext(), response,
-                        //        Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Your event was created!",
+                                Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(CreateEventsActivity.this, MyCreatedEventActivity.class);
                         startActivity(intent);
                     }
