@@ -66,4 +66,7 @@
     <string name="pick_start">Pick start time</string>
     <string name="pick_end">Pick end time</string>
 
+
+    <string name="add_to_calendar"><u>Add to Google Calendar</u></string>
+
 </resources>

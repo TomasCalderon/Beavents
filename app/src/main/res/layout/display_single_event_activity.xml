@@ -24,12 +24,23 @@
             <Button
                 android:text="Save/Bookmark"
                 android:textColor="#141C11"
-                android:textSize="22sp"
+                android:textSize="16sp"
                 android:id="@+id/saveButton"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/buttonshape"
                 android:layout_marginBottom="10dp"/>
+            <TextView
+                android:id="@+id/calendar_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/dotted"
+                android:gravity="left"
+                android:text="@string/add_to_calendar"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:textColor="#ff0000"
+                android:layout_gravity="center_horizontal" />
 
             <TextView
                 android:layout_height="wrap_content"
@@ -50,7 +61,7 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:text="Time"
+                android:text="Date/Time"
                 style="?android:attr/listSeparatorTextViewStyle" />
             <TextView
                 android:layout_width="fill_parent"
@@ -94,7 +105,14 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"/>
 
-
+            <Button
+                android:text="Delete Event"
+                android:textColor="#141C11"
+                android:textSize="16sp"
+                android:id="@+id/deleteButton"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:visibility="gone"/>
         </LinearLayout>
     </ScrollView>
     <!-- The navigation drawer -->
