@@ -140,8 +140,9 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             Gson gson = new Gson();
             String interests=prefs.getString("user_interests","none");
-            if(interests.equals("none")){
-                return "SELECT * FROM Events WHERE Image = 'default.png'";
+
+            if(interests.equals("[]")){
+                return "SELECT * FROM Events WHERE CourseNum1 = 25";
             }else {
                 String[] interests_list = gson.fromJson(interests, String[].class);
                 List<String> all_interests = new ArrayList(Arrays.asList(interests_list));
@@ -158,7 +159,7 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             String a = "SELECT * FROM Events WHERE CourseNum1 =" + courseNumber+ " or CourseNum2 ="+courseNumber;
             return a;
         }else if(eventsToDisplay.equals("ALL")){
-            return "SELECT * FROM Events";
+            return "SELECT * FROM Events WHERE CourseNum1 NOT in (25)";
         }
         else{
             eventsToDisplay = "'"+eventsToDisplay+"'";
