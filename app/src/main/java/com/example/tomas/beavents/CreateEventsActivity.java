@@ -469,15 +469,17 @@ public class CreateEventsActivity extends BaseActivity {
             String cat1= category1.getSelectedItem().toString();
             String cat2= category2.getSelectedItem().toString();
             String cat3= category3.getSelectedItem().toString();
+
+
             String courseNum1= course1.getSelectedItem().toString();
             String courseNum2= course2.getSelectedItem().toString();
 
             if(cat1.equals("Select a Category"))cat1="";
             if(cat2.equals("Select a Category"))cat2="";
             if(cat3.equals("Select a Category"))cat3="";
-            if(courseNum1.equals("Select Course Number"))courseNum1="";
+            if(courseNum1.equals("Select Course Number"))courseNum1="0";
             else courseNum1=courseNum1.split(" ")[1];
-            if(courseNum2.equals("Select Course Number"))courseNum2="";
+            if(courseNum2.equals("Select Course Number"))courseNum2="0";
             else courseNum2=courseNum2.split(" ")[1];
 
 
