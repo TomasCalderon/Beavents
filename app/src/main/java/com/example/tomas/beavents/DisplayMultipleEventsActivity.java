@@ -37,8 +37,10 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -252,7 +254,30 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             for(int i=0; i<jArray.length();i++){
                 JSONObject json = jArray.getJSONObject(i);
                 Event fetchedEvent = parseEvent(json);
-                loadedEvents.add(fetchedEvent);
+
+                //Integer[] date = DisplaySingleEventActivity.convertEventDate(fetchedEvent.getDate());
+                Integer[] time = DisplaySingleEventActivity.convertEventTime(fetchedEvent.getTime());
+
+                Date currentDate = new Date();
+                boolean eventOccursAfter=false;
+                if(fetchedEvent.getDate().length()==0)eventOccursAfter=true;
+                else if(time.length==0){ //All day
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                    Date d = sdf.parse(fetchedEvent.getDate());
+                    if(d.after(currentDate))eventOccursAfter=true;
+                }
+                else{
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                    Date d = sdf.parse(fetchedEvent.getDate()+" "+String.format("%02d:%02d",time[0],time[1]));
+                    if(d.after(currentDate))eventOccursAfter=true;
+                }
+
+                if(eventOccursAfter){
+                    loadedEvents.add(fetchedEvent);
+                    imagePaths.add(fetchedEvent.getImage());
+                }
+
+                //System.out.println(eventOccursAfter);
             }
         } catch (Exception e) {
             // TODO: handle exception
@@ -311,7 +336,6 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             imageLoader.displayImage(IMAGEBASE + imagePaths.get(position)
                     , gridViewImageHolder.imageView
                     , options);
-
             name = (TextView) view.getTag(R.id.text);
             name.setText(loadedEvents.get(position).getName()+"\n"+ loadedEvents.get(position).getDate() + "\n"+ loadedEvents.get(position).getTime());
 
@@ -323,7 +347,6 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
         try {
 
             String image = json.getString("Image");
-            imagePaths.add(image);
 
             String name = json.getString("Name");
             String date = json.getString("Date");

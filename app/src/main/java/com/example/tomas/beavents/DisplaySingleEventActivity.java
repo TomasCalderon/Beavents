@@ -106,13 +106,13 @@ public class DisplaySingleEventActivity extends BaseActivity {
         }
     }
 
-    private Integer[] convertEventTime(){
+    public static Integer[] convertEventTime(String time){
         // Converts event's time to and integer array
         //      If time is not valid: returns []
         //      If time is valid (starttime to endtime):
         //             returns [start_hourOfDay, start_minute, end_hourOfDay, end_minute]
 
-        String time = mEvent.getTime();
+        //String time = mEvent.getTime();
         try{
             String startTime = time.split(" to ")[0];
             int add=0;
@@ -136,13 +136,13 @@ public class DisplaySingleEventActivity extends BaseActivity {
         }
     }
 
-    private Integer[] convertEventDate(){
+    public static Integer[] convertEventDate(String date){
         // Converts event's time to and integer array
         //      If date is not valid: returns [2015,3,1] april fools!
         //      If date is valid (mm/dd/yyyy):
         //             returns [year,month,day]
         // NOTE GREGORIAN CALENDAR TREATS MONTH 0 AS JANUARY
-        String date = mEvent.getDate();
+        //String date = mEvent.getDate();
         try{
             int month = Integer.parseInt(date.split("/")[0])-1;
             int day = Integer.parseInt(date.split("/")[1]);
@@ -162,8 +162,8 @@ public class DisplaySingleEventActivity extends BaseActivity {
         intent.putExtra(CalendarContract.Events.EVENT_LOCATION, mEvent.getLocation());
         intent.putExtra(CalendarContract.Events.DESCRIPTION, mEvent.getDescription());
 
-        Integer[] date = convertEventDate();
-        Integer[] time = convertEventTime();
+        Integer[] date = convertEventDate(mEvent.getDate());
+        Integer[] time = convertEventTime(mEvent.getTime());
 
         if(time.length==0){ // all day event
             GregorianCalendar calDate = new GregorianCalendar(date[0], date[1], date[2]);
