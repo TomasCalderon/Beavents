@@ -383,9 +383,8 @@ public class CreateEventsActivity extends BaseActivity {
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            System.out.println(month+"/"+day+"/"+year);
             Button dateButton  = (Button) this.getActivity().findViewById(R.id.date);
-            dateButton.setText(month+"/"+day+"/"+year);
+            dateButton.setText((month+1)+"/"+day+"/"+year);
         }
     }
 
