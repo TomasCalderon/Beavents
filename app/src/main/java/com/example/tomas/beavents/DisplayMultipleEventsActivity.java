@@ -246,7 +246,7 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
                     , options);
 
             name = (TextView) view.getTag(R.id.text);
-            name.setText(loadedEvents.get(position).getName());
+            name.setText(loadedEvents.get(position).getName()+"\n"+ loadedEvents.get(position).getDate() + "\n"+ loadedEvents.get(position).getTime());
 
             return view;
         }
