@@ -125,7 +125,7 @@ public class BaseActivity extends ActionBarActivity implements AdapterView.OnIte
         mDrawerList.setItemChecked(position, true);
 
         Intent intent = chosenScreenIntent(mMenuOptions[position]);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
         startActivity(intent);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
@@ -139,6 +139,11 @@ public class BaseActivity extends ActionBarActivity implements AdapterView.OnIte
         switch(optionChosen){
             case "Home":
                 return new Intent(this, MainActivity.class);
+            case "All Events":
+                String eventsToDisplay = "ALL";
+                Intent intent = new Intent(this, DisplayMultipleEventsActivity.class);
+                intent.putExtra("eventsToDisplay", eventsToDisplay);
+                return intent;
             case "Search by Categories":
                 return new Intent(this, CategoriesActivity.class);
             case "Search by Course Number":

@@ -37,7 +37,7 @@
             android:label="@string/created_events" />
         <activity
             android:name=".DisplayMultipleEventsActivity"
-            android:label="@string/app_name" />
+            android:label="@string/your_interests" />
         <activity
             android:name=".DisplaySingleEventActivity"
             android:label="@string/Event" />

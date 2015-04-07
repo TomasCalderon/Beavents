@@ -13,11 +13,13 @@
     <string name="categories">Search by Categories</string>
     <string name="course_number">Search by Course Number</string>
     <string name="create_events">Create An Event</string>
+    <string name="your_interests">Your Interests</string>
     <string name="saved_events">My Saved Events</string>
     <string name="created_events">My Created Events</string>
     <string name="settings">Settings</string>
     <string-array name= "menu">
         <item >Home</item>
+        <item>All Events</item>
         <item>Search by Categories</item>
         <item>Search by Course Number</item>
         <item>Create Event</item>

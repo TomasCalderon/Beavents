@@ -3,10 +3,12 @@ package com.example.tomas.beavents;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -35,6 +38,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -62,6 +66,10 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
         StrictMode.enableDefaults(); //STRICT MODE ENABLED
 
         eventsToDisplay = (String) getIntent().getExtras().getString("eventsToDisplay");
+
+        if(eventsToDisplay.equals("ALL")){
+            this.setTitle("All Events");
+        }
 
         new LoadImage(this).execute(0);
 
@@ -129,13 +137,30 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
 
     private String createQueryString() {
         if(eventsToDisplay.equals("INTERESTS")){
-            return "SELECT * FROM Events";
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            Gson gson = new Gson();
+            String interests=prefs.getString("user_interests","none");
+            if(interests.equals("none")){
+                return "SELECT * FROM Events WHERE Image = 'default.png'";
+            }else {
+                String[] interests_list = gson.fromJson(interests, String[].class);
+                List<String> all_interests = new ArrayList(Arrays.asList(interests_list));
+                String categories = getCategoriesQueryString(all_interests);
+                String courseNums = getCourseNumberQueryString(all_interests);
+                Log.e("please",categories);
+                Log.e("please",courseNums);
+                String queryString = "SELECT * FROM Events WHERE Category1 in " + categories+ " or Category2 in "+categories
+                        + " or Category3 in " + categories + " or CourseNum1 in " + courseNums + " or CourseNum2 in " + courseNums ;
+                Log.e("please",queryString);
+                return queryString ;
+            }
         }else if(eventsToDisplay.contains("number")){
             String courseNumber = eventsToDisplay.substring(6);
             String a = "SELECT * FROM Events WHERE CourseNum1 =" + courseNumber+ " or CourseNum2 ="+courseNumber;
             return a;
+        }else if(eventsToDisplay.equals("ALL")){
+            return "SELECT * FROM Events";
         }
-
         else{
             eventsToDisplay = "'"+eventsToDisplay+"'";
             String a = "SELECT * FROM Events WHERE Category1 =" + eventsToDisplay+ " or Category2 ="+eventsToDisplay
@@ -143,6 +168,40 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             return a;
         }
 
+    }
+
+    private String getCategoriesQueryString(List<String> all_interests) {
+        String categories = "(";
+        int counter = 0;
+        for (int i = 0; i < all_interests.size(); i++) {
+            String currentInterest = all_interests.get(i);
+            if(!currentInterest.contains("Course")){
+                if (counter == 0) {
+                    categories += "'" +currentInterest + "'";
+                    counter +=1;
+                } else {
+                    categories += ",'" + currentInterest + "'";
+                }
+            }
+        }
+        return categories+")";
+    }
+
+    private String getCourseNumberQueryString(List<String> all_interests) {
+        String courseNums = "(";
+        int counter = 0;
+        for (int i = 0; i < all_interests.size(); i++) {
+            String currentInterest = all_interests.get(i);
+            if(currentInterest.contains("Course")){
+                if (counter == 0) {
+                    courseNums += currentInterest.split(" ")[1];
+                    counter +=1;
+                } else {
+                    courseNums += ","+currentInterest.split(" ")[1] ;
+                }
+            }
+        }
+        return courseNums+")";
     }
 
     public void getData(List<NameValuePair> params){

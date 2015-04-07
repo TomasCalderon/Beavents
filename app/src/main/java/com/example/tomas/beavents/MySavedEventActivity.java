@@ -132,22 +132,22 @@ public class MySavedEventActivity extends BaseActivity {
     private String createQueryString() {
         String elements= "'default'";
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        Gson gson = new Gson();
-        String all_saved_events=prefs.getString("saved_events","none");
-        if(all_saved_events.equals("none")){
-        } else{
-            elements = "";
-            String[] created_events_list = gson.fromJson(all_saved_events, String[].class);
-            List<String> created_events = new ArrayList(Arrays.asList(created_events_list));
-            for(int i =0; i < created_events.size(); i++){
-                String event = created_events.get(i);
-                if(i == created_events.size() - 1){
-                    elements += "'"+event+"'";
+            Gson gson = new Gson();
+            String all_saved_events=prefs.getString("saved_events","none");
+            if(all_saved_events.equals("none")){
+            } else{
+                elements = "";
+                String[] created_events_list = gson.fromJson(all_saved_events, String[].class);
+                List<String> created_events = new ArrayList(Arrays.asList(created_events_list));
+                for(int i =0; i < created_events.size(); i++){
+                    String event = created_events.get(i);
+                    if(i == created_events.size() - 1){
+                        elements += "'"+event+"'";
+                    }
+                    else{
+                        elements += "'"+event+"',";
+                    }
                 }
-                else{
-                    elements += "'"+event+"',";
-                }
-            }
 
         }
 
