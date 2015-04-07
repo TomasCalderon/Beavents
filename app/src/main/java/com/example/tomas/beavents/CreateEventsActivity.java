@@ -481,7 +481,7 @@ public class CreateEventsActivity extends BaseActivity {
             else courseNum1=courseNum1.split(" ")[1];
             if(courseNum2.equals("Select Course Number"))courseNum2="0";
             else courseNum2=courseNum2.split(" ")[1];
-        
+
 
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();

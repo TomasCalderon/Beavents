@@ -69,40 +69,50 @@ public class SettingsActivity extends BaseActivity  {
             Preference.OnPreferenceChangeListener category_interest_listener = new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Set<String> val = (Set<String>)newValue;
+                    try {
+                        Set<String> val = (Set<String>) newValue;
 
-                    category_interests.clear();
-                    category_interests.addAll(val);
+                        category_interests.clear();
+                        category_interests.addAll(val);
 
-                    if(setInterests()){
-                        System.out.println("Clearing");
-                        clear_interest_preference_values();
-                        update_remove_interest_values();
+                        if (setInterests()) {
+                            System.out.println("Clearing");
+                            clear_interest_preference_values();
+                            update_remove_interest_values();
+                        }
+                        SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+                        String all_interests = prefs.getString("user_interests", "none");
+                        System.out.println(all_interests);
+                        return true;
                     }
-                    SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
-                    String all_interests=prefs.getString("user_interests","none");
-                    System.out.println(all_interests);
-                    return true;
+                    catch(Exception e){
+                        return false;
+                    }
                 }
             };
 
             Preference.OnPreferenceChangeListener course_interest_listener = new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Set<String> val = (Set<String>)newValue;
+                    try{
+                        Set<String> val = (Set<String>)newValue;
 
-                    course_interests.clear();
-                    course_interests.addAll(val);
+                        course_interests.clear();
+                        course_interests.addAll(val);
 
-                    if(setInterests()){
-                        System.out.println("Clearing");
-                        clear_interest_preference_values();
-                        update_remove_interest_values();
+                        if(setInterests()){
+                            System.out.println("Clearing");
+                            clear_interest_preference_values();
+                            update_remove_interest_values();
+                        }
+                        SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+                        String all_interests=prefs.getString("user_interests","none");
+                        System.out.println(all_interests);
+                        return true;
                     }
-                    SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
-                    String all_interests=prefs.getString("user_interests","none");
-                    System.out.println(all_interests);
-                    return true;
+                    catch(Exception e){
+                        return false;
+                    }
                 }
             };
             category_interest_preference.setOnPreferenceChangeListener(category_interest_listener);
@@ -112,16 +122,21 @@ public class SettingsActivity extends BaseActivity  {
             Preference.OnPreferenceChangeListener remove_interest_listener = new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Set<String> val = (Set<String>)newValue;
-                    if(removeInterest(val)) {
-                        clear_interest_preference_values();
-                        update_remove_interest_values();
-                    }
+                    try {
+                        Set<String> val = (Set<String>) newValue;
+                        if (removeInterest(val)) {
+                            clear_interest_preference_values();
+                            update_remove_interest_values();
+                        }
 
-                    SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
-                    String all_interests=prefs.getString("user_interests","none");
-                    System.out.println(all_interests);
-                    return true;
+                        SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+                        String all_interests = prefs.getString("user_interests", "none");
+                        System.out.println(all_interests);
+                        return true;
+                    }
+                    catch(Exception e){
+                        return false;
+                    }
                 }
             };
 
