@@ -16,6 +16,8 @@ public class MyEventsActivity extends BaseActivity{
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((BeaventsApplication) getApplication()).getTracker()
+                .trackScreenView("/my_events", "My Saved Events");
         setContentView(R.layout.my_events);
 
         ActionBar actionBar = getActionBar();

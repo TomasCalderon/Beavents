@@ -91,6 +91,9 @@ public class CreateEventsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((BeaventsApplication) getApplication()).getTracker()
+                .trackScreenView("/create_events", "Create Events");
+
         setContentView(R.layout.create_events);
         super.onCreateDrawer();
 
@@ -152,17 +155,20 @@ public class CreateEventsActivity extends BaseActivity {
     }
 
     public void showDatePickerDialog(View v) {
+        //((BeaventsApplication) getApplication()).getTracker().trackEvent("create_event", "button_click", "date_picker", 1);
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(),"datePicker");
         //newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
     public void showTimePickerDialog1(View v) {
+        //((BeaventsApplication) getApplication()).getTracker().trackEvent("create_event", "button_click", "time_picker1", 1);
         DialogFragment newFragment = new TimePickerFragment1();
         newFragment.show(getFragmentManager(),"timePicker");
         //newFragment.show(getSupportFragmentManager(), "timePicker");
     }
     public void showTimePickerDialog2(View v) {
+        //((BeaventsApplication) getApplication()).getTracker().trackEvent("create_event", "button_click", "time_picker2", 1);
         DialogFragment newFragment = new TimePickerFragment2();
         newFragment.show(getFragmentManager(),"timePicker");
         //newFragment.show(getSupportFragmentManager(), "timePicker");
@@ -170,6 +176,7 @@ public class CreateEventsActivity extends BaseActivity {
 
     public void loadImagefromGallery(View view) {
         // Create intent to Open Image applications like Gallery, Google Photos
+        ((BeaventsApplication) getApplication()).getTracker().trackEvent("create_event", "button_click", "load_image", 1);
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         // Start the Intent
@@ -319,6 +326,7 @@ public class CreateEventsActivity extends BaseActivity {
                     public void onSuccess(String response) {
                         // Hide Progress Dialog
                         prgDialog.hide();
+                        ((BeaventsApplication) getApplication()).getTracker().trackGoal(2, 1);
                         Toast.makeText(getApplicationContext(), "Your event was created!",
                                 Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(CreateEventsActivity.this, MyCreatedEventActivity.class);

@@ -19,6 +19,8 @@ public class CategoriesActivity extends BaseActivity implements AdapterView.OnIt
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        ((BeaventsApplication) getApplication()).getTracker()
+                .trackScreenView("/search_by_categories", "Search By Categories");
         setContentView(R.layout.categories);
         super.onCreateDrawer();
 
@@ -42,6 +44,7 @@ public class CategoriesActivity extends BaseActivity implements AdapterView.OnIt
         else{
             mCategoriesListView.setItemChecked(position, true);
             String eventsToDisplay = mEventCategories[position];
+            ((BeaventsApplication) getApplication()).getTracker().trackEvent("search_by_categories", "button_click", "search", position);
             Intent intent = new Intent(this, DisplayMultipleEventsActivity.class);
             intent.putExtra("eventsToDisplay", eventsToDisplay);
             startActivity(intent);

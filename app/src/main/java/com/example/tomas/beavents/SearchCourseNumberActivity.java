@@ -16,6 +16,8 @@ public class SearchCourseNumberActivity extends BaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        ((BeaventsApplication) getApplication()).getTracker()
+                .trackScreenView("/search_by_course_number", "Search By Course Number");
         setContentView(R.layout.categories);
         super.onCreateDrawer();
 
@@ -37,6 +39,7 @@ public class SearchCourseNumberActivity extends BaseActivity{
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (super.isDrawerOpen())super.onItemClick(parent,view,position,id);
         else{
+            ((BeaventsApplication) getApplication()).getTracker().trackEvent("search_by_course_number", "button_click", "search", position);
             mCategoriesListView.setItemChecked(position, true);
             String eventsToDisplay = mEventCategories[position].split(" ")[1];
             Intent intent = new Intent(this, DisplayMultipleEventsActivity.class);

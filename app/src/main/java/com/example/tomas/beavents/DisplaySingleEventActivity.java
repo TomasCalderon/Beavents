@@ -58,6 +58,8 @@ public class DisplaySingleEventActivity extends BaseActivity {
         super.onCreateDrawer();
 
         this.mEvent = (Event) getIntent().getSerializableExtra(DisplayMultipleEventsActivity.SER_KEY);
+        ((BeaventsApplication) getApplication()).getTracker()
+                .trackScreenView("/single_event", "View Event: "+mEvent.getName());
 
         this.mImageView = (ImageView) findViewById(R.id.eventImage);
         new LoadImage().execute(DisplayMultipleEventsActivity.IMAGEBASE + mEvent.getImage());
@@ -156,6 +158,7 @@ public class DisplaySingleEventActivity extends BaseActivity {
     }
 
     private void addToCalendar(){
+        ((BeaventsApplication) getApplication()).getTracker().trackEvent("single_event", "button_click", "add_to_calendar", 1);
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setType("vnd.android.cursor.item/event");
         intent.putExtra(CalendarContract.Events.TITLE, mEvent.getName());
@@ -220,6 +223,7 @@ public class DisplaySingleEventActivity extends BaseActivity {
     }
 
     private void saveEvent(){
+        ((BeaventsApplication) getApplication()).getTracker().trackEvent("single_event", "button_click", "save_event", 1);
         String fileName=mEvent.getImage();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         SharedPreferences.Editor editor = prefs.edit();

@@ -24,6 +24,8 @@ public class SettingsActivity extends BaseActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        ((BeaventsApplication) getApplication()).getTracker()
+                .trackScreenView("/settings", "Settings");
         setContentView(R.layout.settings);
         super.onCreateDrawer();
         // Display the fragment as the main content.
@@ -43,6 +45,12 @@ public class SettingsActivity extends BaseActivity  {
 //        SharedPreferences prefs =
 //                PreferenceManager.getDefaultSharedPreferences(this);
 //        prefs.registerOnSharedPreferenceChangeListener(listener);
+    }
+
+    public void trackPreferenceChange(){
+
+        ((BeaventsApplication) getApplication()).getTracker().trackEvent("create_event", "button_click", "date_picker", 1);
+
     }
 
 

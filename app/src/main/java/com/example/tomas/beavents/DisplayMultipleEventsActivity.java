@@ -62,6 +62,9 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((BeaventsApplication) getApplication()).getTracker()
+                .trackScreenView("/display_multiple_events", "Suggested Events");
+
         setContentView(R.layout.activity_main);
             super.onCreateDrawer();
 
