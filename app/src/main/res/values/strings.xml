@@ -68,5 +68,6 @@
 
 
     <string name="add_to_calendar"><u>Add to Google Calendar</u></string>
+    <string name="usage">Usage Statistics</string>
 
 </resources>

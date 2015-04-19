@@ -62,6 +62,8 @@ public class MySavedEventActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        ((BeaventsApplication) getApplication()).getTracker()
+                .trackScreenView("/my_saved_events", "My Saved Events");
         setContentView(R.layout.activity_main);
         super.onCreateDrawer();
 
