@@ -452,7 +452,9 @@ public class CreateEventsActivity extends BaseActivity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             Button startTimeButton  = (Button) this.getActivity().findViewById(R.id.startTime);
             String result = String.format("%02d:%02d AM",hourOfDay,minute);
+            if(hourOfDay==0) result=String.format("%02d:%02d AM",hourOfDay+12,minute);
             if(hourOfDay>12) result=String.format("%02d:%02d PM",hourOfDay-12,minute);
+            if(hourOfDay==12) result=String.format("%02d:%02d PM",hourOfDay,minute);
 
             startTimeButton.setText(result);
         }
@@ -475,7 +477,9 @@ public class CreateEventsActivity extends BaseActivity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             Button endTimeButton  = (Button) this.getActivity().findViewById(R.id.endTime);
             String result = String.format("%02d:%02d AM",hourOfDay,minute);
+            if(hourOfDay==0) result=String.format("%02d:%02d AM",hourOfDay+12,minute);
             if(hourOfDay>12) result=String.format("%02d:%02d PM",hourOfDay-12,minute);
+            if(hourOfDay==12) result=String.format("%02d:%02d PM",hourOfDay,minute);
 
             endTimeButton.setText(result);
         }
