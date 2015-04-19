@@ -255,6 +255,7 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
                 JSONObject json = jArray.getJSONObject(i);
                 Event fetchedEvent = parseEvent(json);
 
+
                 //Integer[] date = DisplaySingleEventActivity.convertEventDate(fetchedEvent.getDate());
                 Integer[] time = DisplaySingleEventActivity.convertEventTime(fetchedEvent.getTime());
 

@@ -33,6 +33,9 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -45,6 +48,9 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -88,6 +94,8 @@ public class CreateEventsActivity extends BaseActivity {
     public Spinner category3;
 
     public String imageFile;
+    private ImageLoader imageLoader;
+    DisplayImageOptions options;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,8 +208,10 @@ public class CreateEventsActivity extends BaseActivity {
                 cursor.close();
                 ImageView imgView = (ImageView) findViewById(R.id.imgView);
                 // Set the Image in ImageView
-                imgView.setImageBitmap(BitmapFactory
-                        .decodeFile(imgPath));
+
+
+                Bitmap bm = ShrinkBitmap(imgPath, 300, 300);
+                imgView.setImageBitmap(bm);
                 // Get the Image's file name
                 String fileNameSegments[] = imgPath.split("/");
                 fileName = fileNameSegments[fileNameSegments.length - 1];
@@ -246,6 +256,32 @@ public class CreateEventsActivity extends BaseActivity {
 
     }
 
+    Bitmap ShrinkBitmap(String file, int width, int height){
+
+        BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
+        bmpFactoryOptions.inJustDecodeBounds = true;
+        Bitmap bitmap = BitmapFactory.decodeFile(file, bmpFactoryOptions);
+
+        int heightRatio = (int)Math.ceil(bmpFactoryOptions.outHeight/(float)height);
+        int widthRatio = (int)Math.ceil(bmpFactoryOptions.outWidth/(float)width);
+
+        if (heightRatio > 1 || widthRatio > 1)
+        {
+            if (heightRatio > widthRatio)
+            {
+                bmpFactoryOptions.inSampleSize = heightRatio;
+            } else {
+                bmpFactoryOptions.inSampleSize = widthRatio;
+            }
+        }
+
+        bmpFactoryOptions.inJustDecodeBounds = false;
+        bitmap = BitmapFactory.decodeFile(file, bmpFactoryOptions);
+        return bitmap;
+    }
+
+
+
     // When Upload button is clicked
     public void uploadImage(View v) {
         // When Image is selected from Gallery
@@ -278,8 +314,7 @@ public class CreateEventsActivity extends BaseActivity {
                 BitmapFactory.Options options = null;
                 options = new BitmapFactory.Options();
                 options.inSampleSize = 3;
-                bitmap = BitmapFactory.decodeFile(imgPath,
-                        options);
+                bitmap = ShrinkBitmap(imgPath, 300, 300);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 // Must compress the Image to reduce image size to make upload easy
                 bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
@@ -461,6 +496,7 @@ public class CreateEventsActivity extends BaseActivity {
 
             String eventTitle = titlefld.getText().toString();
             String date = dayfld.getText().toString();
+
             String location = locationfld.getText().toString();
             //String categories = categoriesfld.getText().toString();
             String description = descriptionfld.getText().toString();
@@ -469,6 +505,10 @@ public class CreateEventsActivity extends BaseActivity {
             String cat2= category2.getSelectedItem().toString();
             String cat3= category3.getSelectedItem().toString();
 
+            if(date.equals("Click to set date of event")){
+                date = "4/30/2030";
+                description = "Message to the uploader of the event: \n You did not specify the date for this event. Please delete this event and upload it with the correct format. Att: Beavents staff";
+            }
 
             String courseNum1= course1.getSelectedItem().toString();
             String courseNum2= course2.getSelectedItem().toString();
@@ -546,5 +586,7 @@ public class CreateEventsActivity extends BaseActivity {
         }
 
     }
+
+
 
 }
