@@ -98,6 +98,7 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 
             String queryString = createQueryString();
+            Log.e("where", queryString);
             params.add(new BasicNameValuePair("Query", queryString));
             getData(params);
             return 0;
@@ -145,8 +146,8 @@ public class DisplayMultipleEventsActivity extends BaseActivity {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             Gson gson = new Gson();
             String interests=prefs.getString("user_interests","none");
+            if(interests.equals("[]") || interests.equals("none")){
 
-            if(interests.equals("[]")){
                 return "SELECT * FROM Events WHERE CourseNum1 = 25";
             }else {
                 String[] interests_list = gson.fromJson(interests, String[].class);
